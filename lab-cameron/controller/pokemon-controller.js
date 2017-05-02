@@ -2,28 +2,30 @@
 
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const mkdirp = require('mkdirp');
+const mkdirp = require('mkdirp-promise');
 const del = require('del');
-
-const storage = {};
 
 module.exports = exports = {};
 
 exports.createPokemon = function(schema, pokemon) {
+  console.log('inside createPokemon function');
   if(!schema) return Promise.reject(new Error('schema required'));
   if(!pokemon) return Promise.reject(new Error('pokemon required'));
-  if(!storage[schema]) storage[schema] = {};
-  storage[schema][pokemon.id] = pokemon;
 
-  mkdirp(`./data/${schema}`, function(err) {
-    if (err) console.error(err);
-    fs.writeFileProm(`./data/${schema}/${pokemon.id}.json`, JSON.stringify(pokemon))
+  return mkdirp(`./data/${schema}`)
+  .then(() => {
+    return fs.writeFileProm(`./data/${schema}/${pokemon.id}.json`, JSON.stringify(pokemon))
     .then(() => {
-      console.log(JSON.stringify(pokemon));
+      return JSON.stringify(pokemon);
     })
-    .catch(console.error);
+    .catch(err => {
+      return err;
+    });
+  })
+  .catch(err => {
+    return err;
   });
-  return Promise.resolve(pokemon);
+  // return Promise.resolve(pokemon);
 };
 
 exports.fetchPokemon = function(schema, id) {
