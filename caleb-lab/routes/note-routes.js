@@ -13,8 +13,8 @@ module.exports = function(router){
     debug('#GET');
 
     noteCtrl.fetchNote('note', req.params.id)
-    .then(data => res.json(JSON.stringify(data.toString())))
-    .catch(err => res.send(err));
+    .then(data => res.json(data.toString()))
+    .catch(err => res.status(400).send(err.message));
   });
 
   router.post('/api/note', jsonParser, (req, res) => {
@@ -23,14 +23,13 @@ module.exports = function(router){
 
     noteCtrl.createNote('note', note)
     .then(note => res.json(JSON.stringify(note)))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err.message));
   });
 
-  router.put('/api/note/:id', jsonParser, (req, res) => {
+  router.put('/api/note/', (req, res) => {
     debug('#PUT');
-
     noteCtrl.updateNote('note', req.body)
-    .then(note => res.json(JSON.stringify(note)))
-    .catch(err => res.send(err));
+    .then(data => res.json(data))
+    .catch(err => res.status(404).send(err.message));
   });
 };

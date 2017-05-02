@@ -15,9 +15,6 @@ app.use(jsonParser);
 require('./routes/note-routes.js')(router);
 app.use(router);
 
-// require('./routes/some-routes')(router);
-// require('./routes/other-routes')(router);
-
 app.listen(PORT, () => console.log(`Listening on port, http://localhost:${PORT}`));
 
 module.exports = app; //not required here unless youre testing
