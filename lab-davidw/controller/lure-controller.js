@@ -13,7 +13,7 @@ exports.createItem = function(schema, lure) {
 
   let  jsonLure = JSON.stringify(lure);
   return fs.writeFileProm(`${LURE_URL}/${schema}/${lure.id}.json`, jsonLure)
-  .then(() => note)
+  .then(() => lure)
   .catch(err => Promise.reject(createError(500, err.message)));
 
   // exports.fetchItem = function() {
