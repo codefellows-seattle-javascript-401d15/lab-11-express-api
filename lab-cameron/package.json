@@ -32,7 +32,9 @@
     "body-parser": "^1.17.1",
     "del": "^2.2.2",
     "fs": "0.0.1-security",
+    "http-errors": "^1.6.1",
     "mkdirp": "^0.5.1",
+    "mkdirp-promise": "^5.0.1",
     "uuid": "^3.0.1"
   }
 }
