@@ -7,9 +7,11 @@
     "test": "test"
   },
   "scripts": {
+    "lint": "eslint ./server.js",
     "test": "mocha",
     "start": "node server.js",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "build": "npm run lint && npm run test"
   },
   "keywords": [
     "express",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
     "mocha": "^3.3.0",
     "morgan": "^1.8.1"
   },

@@ -3,7 +3,7 @@
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const mkdirp = require('mkdirp');
-// const del = require('del');
+const del = require('del');
 
 const storage = {};
 
@@ -27,54 +27,50 @@ exports.createPokemon = function(schema, pokemon) {
 };
 
 exports.fetchPokemon = function(schema, id) {
-  return new Promise((resolve, reject) => {
-    // debug('#fetchPokemon');
-    if (!schema) return reject(new Error('Schema required'));
-    if (!id) return reject(new Error('Id required.'));
+  if (!schema) return Promise.reject(new Error('Schema required'));
+  if (!id) return Promise.reject(new Error('Id required.'));
 
-    let schemaName = storage[schema];
-    if (!schemaName) return reject(new Error('Schema not found'));
-
-    let pokemon = schemaName[id];
-    if (!pokemon) return reject(new Error('Pokemon not found'));
-
-    resolve(pokemon);
+  return fs.statProm(`./data/${schema}/${id}.json`)
+  .catch(err => {
+    return Promise.reject(err);
+  })
+  .then(() => {
+    return fs.readFileProm(`./data/pokemon/${id}.json`);
+  })
+  .then(data => {
+    return Promise.resolve(JSON.parse(data.toString()));
   });
 };
 
 exports.updatePokemon = function(schema, id, newPoke) {
-  return new Promise((resolve, reject) => {
-    // debug('#updatePokemon');
-    if (!schema) return reject(new Error('Schema required'));
-    if (!id) return reject(new Error('Id required.'));
+  if (!schema) return Promise.reject(new Error('Schema required'));
+  if (!id) return Promise.reject(new Error('Id required.'));
 
-    let schemaName = storage[schema];
-    if (!schemaName) return reject(new Error('Schema not found'));
-
-    let pokemon = schemaName[id];
-    if (!pokemon) return reject(new Error('Pokemon not found'));
-
+  return fs.readFileProm(`./data/${schema}/${id}.json`, 'utf-8')
+  .then(pokemon => {
+    pokemon = JSON.parse(pokemon);
     if (newPoke.name) pokemon.name = newPoke.name;
     if (newPoke.type) pokemon.type = newPoke.type;
-
-    resolve(pokemon);
-  });
+    fs.writeFileProm(`./data/${schema}/${id}.json`, JSON.stringify(pokemon))
+    .then(console.log)
+    .catch(console.error);
+  })
+  .catch(console.error);
 };
 
 exports.deletePokemon = function(schema, id) {
-  return new Promise((resolve, reject) => {
-    // debug('#deletePokemon');
-    if (!schema) return reject(new Error('Schema required'));
-    if (!id) return reject(new Error('Id required.'));
+  if (!schema) return Promise.reject(new Error('Schema required'));
+  if (!id) return Promise.reject(new Error('Id required.'));
 
-    let schemaName = storage[schema];
-    if (!schemaName) return reject(new Error('Schema not found'));
-
-    let pokemon = schemaName[id];
-    if (!pokemon) return reject(new Error('Pokemon not found'));
-
-    delete storage[schema][id];
-
-    resolve();
+  return fs.statProm(`./data/${schema}/${id}.json`)
+  .catch(err => {
+    return Promise.reject(err);
+  })
+  .then(() => {
+    return del(`./data/${schema}/${id}.json`)
+    .then(() => console.log('Pokemon deleted'));
+  })
+  .then(() => {
+    return Promise.resolve();
   });
 };
