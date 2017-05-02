@@ -21,7 +21,7 @@ describe('Server module tests', function() {
         .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
         .end((err, res) => {
           if (err) console.error(err);
-          console.log('res.body', res.body);
+          // console.log('res.body', res.body);
           expect(res.body.artist).to.equal('Billy Joel');
           done();
         });
@@ -84,7 +84,7 @@ describe('Server module tests', function() {
     });
   });
   
-  describe('GET method', function() {
+  describe.only('GET method', function() {
     let testGet;
     before(done => {
       chai.request(server)
@@ -99,7 +99,7 @@ describe('Server module tests', function() {
     describe('A request should return an item', function() {
       it('should return the correct response if the id is passed in', done => {
         chai.request(server)
-        .get(`/api/album?id=${testGet.id}`)
+        .get(`/api/album/${testGet.id}`)
         .end((err, res) => {
           if (err) console.error(err);
           let expectedResult = JSON.parse(res.text.toString());
@@ -110,7 +110,7 @@ describe('Server module tests', function() {
       
       it('should return a status of 200 on proper request', done => {
         chai.request(server)
-        .get(`/api/album?id=${testGet.id}`)
+        .get(`/api/album/${testGet.id}`)
         .end((err, res) => {
           if (err) console.error(err);
           expect(res.status).to.equal(200);

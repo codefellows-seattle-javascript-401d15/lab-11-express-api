@@ -16,13 +16,14 @@ module.exports = function(router) {
   router.get('/api/album/:id', (req, res) => {
     console.log('in router.get');
     albumCtrl.fetchAlbum('album', req.params.id)
-    .then(data => req.json(JSON.stringify(data.toString())))
+    .then(data => res.json(JSON.stringify(data.toString())))
     .catch(err => res.send(err));
+    console.log(req.params.id);
   });
   
   router.put('/api/album/:id', (req, res) => {
     albumCtrl.fetchAlbum('album', req.params.id)
-    .then(data => req.json(JSON.stringify(data.toString())))
+    .then(data => res.json(JSON.stringify(data.toString())))
     .catch(err => res.send(err))
     .then(
       albumCtrl.createAlbum('album', req.body) //not sure if i need req.body.artist, req.body.title, etc.
