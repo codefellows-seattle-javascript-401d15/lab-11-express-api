@@ -10,9 +10,8 @@ module.exports = function(router){
     if(req.url.query.id) {
       storage.fetchHawk('hawk', req.url.query.id)
       .then(hawk => {
-        console.log(hawk);
         res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(hawk);
+        res.write(JSON.stringify(hawk));
         res.end();
       })
       .catch(err => {
@@ -55,6 +54,7 @@ module.exports = function(router){
         if(req.body.name) hawk.name = req.body.name;
         if(req.body.pos) hawk.pos = req.body.pos;
         if(req.body.round) hawk.round = req.body.round;
+        storage.createHawk('hawk', hawk);
         res.writeHead(202, {'Content-Type': 'application/json'});
         res.write(JSON.stringify(hawk));
         res.end();

@@ -28,14 +28,17 @@ exports.fetchHawk = function(schema, id){
     if(!schema) return reject(new Error('schema required'));
     if(!id) return reject(new Error('id required'));
 
-    let hawk = fs.readFileProm(`${__dirname}/../data/${schema}/${id}.json`, 'ascii', function(err, data){
+    fs.readFileProm(`${__dirname}/../data/${schema}/${id}.json`, function(err){
       if (err) return Promise.reject(new Error(err));
-      return JSON.parse(data.toString());
+    }).then((hawk) => {
+      return resolve(JSON.parse(hawk.toString()));
+    }).catch(err => {
+      return reject(err);
     });
 
-    return resolve(hawk);
   });
 };
+
 
 exports.deleteHawk = function(schema, id){
   debug('#deleteHawk');

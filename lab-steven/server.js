@@ -2,8 +2,6 @@
 
 const http = require('http');
 const Router = require('./lib/router');
-// const storage = require('./lib/storage');
-// const Seahawk = require('./model/seahawks');
 const debug = require('debug')('#http:server');
 const PORT = process.env.PORT || 3000;
 
