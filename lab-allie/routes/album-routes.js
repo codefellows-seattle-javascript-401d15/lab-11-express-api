@@ -24,12 +24,12 @@ module.exports = function(router) {
   router.put('/api/album/:id', (req, res) => {
     albumCtrl.fetchAlbum('album', req.params.id)
     .then(data => res.json(JSON.stringify(data.toString())))
-    .catch(err => res.send(err))
     .then(
-      albumCtrl.createAlbum('album', req.body) //not sure if i need req.body.artist, req.body.title, etc.
+      albumCtrl.createAlbum('album', res.params) //not sure if i need req.body.artist, req.body.title, etc.
       .then(album => res.json(JSON.stringify(album)))
       .catch(err => res.send(err))
-    );
+    )
+    .catch(err => res.send(err));
     console.log('in router.put');
   });
   

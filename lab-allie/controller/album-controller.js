@@ -9,7 +9,7 @@ module.exports = exports = {};
 
 exports.createAlbum = function(schema, album) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
-  if(!album) return Promise.reject(createError(400, 'Note required'));
+  if(!album) return Promise.reject(createError(400, 'Album required'));
   
   let jsonAlbum = JSON.stringify(album);
   return fs.writeFileProm(`${DATA_URL}/${schema}/${album.id}.json`, jsonAlbum)
@@ -25,7 +25,7 @@ exports.fetchAlbum = function(schema, id) {
   .then(data => data)
   .catch(err => Promise.reject(createError(500, err.message)));
 };
-// 
+
 // exports.updateAlbum = function(schemaName, album) {
 //   if(!schemaName) return (new Error('Schema required'));
 //   if(!album) return (new Error('Album required'));
