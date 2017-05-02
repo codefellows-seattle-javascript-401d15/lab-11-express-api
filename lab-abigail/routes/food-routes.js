@@ -5,26 +5,13 @@ const foodController = require('../controller/storage');
 
 
 module.exports = function(router) {
-  // router.get('/api/food', function(req, res) {
-  //   if(req.url.query.id) {
-  //     storage.fetchItem('food', req.url.query.id)
-  //     .then(food => {
-  //       res.writeHead(201, {'Content-Type': 'application/json'});
-  //       res.write(JSON.stringify(food));
-  //       res.end();
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //       res.writeHead(404, {'Content-Type': 'text/plain'});
-  //       res.write('not found');
-  //       res.end();
-  //     })
-  //     return;
-  //   }
-  //   res.writeHead(400, {'Content-Type': 'text/plain'})
-  //   res.write('bad request');
-  //   res.end();
-  // })
+
+  router.get('/api/food/:id', (req, res) => {
+    console.log('in get!');
+    foodController.fetchItem('food', req.params.id)
+    .then( food => res.json(food.toString()))
+    .catch(err => res.send(err));
+  });
 
   router.post('/api/food', (req, res) => {
     let food = new FoodItem(req.body.name, req.body.type, req.body.cost);
