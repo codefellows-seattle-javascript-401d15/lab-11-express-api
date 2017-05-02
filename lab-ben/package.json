@@ -8,9 +8,9 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "mocha && eslint ./",
+    "build": "mocha && eslint**",
     "start": "node server.js",
-    "live": "nodemon server.js"    
+    "live": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
+    "express": "^4.15.2",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
