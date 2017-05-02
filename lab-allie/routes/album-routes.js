@@ -1,10 +1,6 @@
 'use strict';
 
-//finish this with demo code, something isn't right!
-
-
 const Album = require('../model/albums.js');
-// const storage = require('../lib/storage.js');
 const albumCtrl = require('../controller/album-controller.js');
 
 module.exports = function(router) {
@@ -19,6 +15,6 @@ module.exports = function(router) {
   router.get('/api/album/:id', (req, res) => {
     albumCtrl.fetchAlbum('note', req.params.id)
     .then(data => req.json(JSON.stringify(data.toString)))
-  .catch(err => res.send(err));
+    .catch(err => res.send(err));
   });
 };
