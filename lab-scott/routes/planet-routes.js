@@ -13,7 +13,7 @@ module.exports = function(router) {
 
   router.get('/api/planet/:id', (req,res) => {
     planetCrtl.fetchItem('planet', req.params.id)
-      .then(data => res.json(JSON.stringify(data.toString())))
+      .then(data => res.json(data.toString()))
       .catch(err => res.send(err));
   });
 
