@@ -2,14 +2,15 @@
 
 const chai = require('chai');
 const expect = chai.expect;
-const server = require('./../server.js');
+const server = require('../server.js');
 const http = require('chai-http');
 
 chai.use(http);
 
 describe('Server module', function() {
+  let app;
   before(done => {
-    server.listen(3000);
+    app = server.listen(8080);
     done();
   });
 
@@ -21,24 +22,33 @@ describe('Server module', function() {
         .send({
           name: 'Wii',
           manufacturer: 'Nintendo',
-          releaseDate: 2006,
+          releaseYear: 2006,
         })
         .end((err, res) => {
           if(err) console.error(err);
-          expect(res).status(201);
-          expect(res.body.name).to.equal('Wii');
+          let hardware = JSON.parse(res.text);
+          this.result = hardware;
+          expect(res).status(200);
+          expect(hardware.name).to.equal('Wii');
           done();
         });
       });
-      // it('should respond with a 400 on bad request', () => {
-      //   chai.request(server)
-      //   .post('/api/consoles')
-      //   .send({})
-      //   .end((err, res) => {
-      //     expect(res).status(400);
-      //     expect(res.body).to.include('bad request');
-      //   });
-      // });
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .post('/api/consoles')
+        .send({})
+        .end((err, res) => {
+          expect(res).status(400);
+          done();
+        });
+      });
+      after(done => {
+        chai.request(server)
+        .delete(`/api/consoles/${this.result.id}`)
+        .end(() => {
+          done();
+        });
+      });
     });
   });
 
@@ -50,7 +60,7 @@ describe('Server module', function() {
   //       .send({
   //         name: 'N64',
   //         manufacturer: 'Nintendo',
-  //         releaseDate: 1996,
+  //         releaseDate: 1992,
   //       })
   //       .end((err, res) => {
   //         this.result = res;
@@ -88,7 +98,7 @@ describe('Server module', function() {
   //       .send({
   //         name: 'Dolphin',
   //         manufacturer: 'Nintendo',
-  //         releaseDate: 2001,
+  //         releaseDate: 2000,
   //       })
   //       .end((err, res) => {
   //         this.result = res;
@@ -164,7 +174,7 @@ describe('Server module', function() {
   // });
 
   after(done => {
-    server.close();
+    app.close();
     done();
   });
 });

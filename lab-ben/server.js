@@ -13,6 +13,7 @@ app.use(jsonParser);
 app.use(morgan('dev'));
 
 require('./routes/consoles-routes.js')(router);
+app.use(router);
 
 app.listen(PORT, () => console.log(`Now listening on port: ${PORT}`));
 
