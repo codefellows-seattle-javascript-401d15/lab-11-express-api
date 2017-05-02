@@ -15,4 +15,10 @@ module.exports = function(router) {
     .then(album => res.json(JSON.stringify(album)))
     .catch(err => res.send(err));
   });
+  
+  router.get('/api/album/:id', (req, res) => {
+    albumCtrl.fetchAlbum('note', req.params.id)
+    .then(data => req.json(JSON.stringify(data.toString)))
+  .catch(err => res.send(err));
+  });
 };
