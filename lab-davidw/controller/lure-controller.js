@@ -15,7 +15,13 @@ exports.createItem = function(schema, lure) {
   return fs.writeFileProm(`${LURE_URL}/${schema}/${lure.id}.json`, jsonLure)
   .then(() => lure)
   .catch(err => Promise.reject(createError(500, err.message)));
+};
 
-  // exports.fetchItem = function() {
-  // };
+exports.fetchItem = function(schema, id) {
+  if(!schema) return Promise.reject(createError(400, 'Schema required'));
+  if(!id) return Promise.reject(createError(400, 'Id required'));
+
+  return fs.readFileProm(`${LURE_URL}/${schema}/${id}.json`)
+    .then(data => data)
+    .catch(err => Promise.reject(createError(500, err.message)));
 };
