@@ -1,0 +1,45 @@
+{
+  "name": "lab-11-express-api",
+  "version": "0.0.1",
+  "description": "single resource api made with express",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint ./**",
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidGWheeler/lab-11-express-api.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "tdd",
+    "bdd",
+    "api"
+  ],
+  "author": "DavidGWheeler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DavidGWheeler/lab-11-express-api/issues"
+  },
+  "homepage": "https://github.com/DavidGWheeler/lab-11-express-api#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
+    "mocha": "^3.3.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "uuid": "^3.0.1"
+  }
+}
