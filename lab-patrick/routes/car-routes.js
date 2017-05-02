@@ -24,16 +24,18 @@ carRouter.get('/api/car/:id', (req, res)=>{
 });
 
 carRouter.put('api/car/:id', (req, res)=> {
-  carCtrl.updateItem('car', req.params.id)
+  console.log('Hello');
+  carCtrl.updateItem('car', req.params.id, req.params.body)
   .then(data => res.json(data.toString()))
   .catch(err => {
+    console.error(err);
     res.send(err);
   });
 });
 
 carRouter.delete('/api/car/:id', (req, res)=>{
   carCtrl.deleteItem('car', req.params.id)
-  .then(()=> res.sendStatus(202))
+  .then(()=> res.sendStatus(204))
   .catch(err => {
     res.send(err);
   });
