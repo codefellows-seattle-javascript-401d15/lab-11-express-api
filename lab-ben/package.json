@@ -1,0 +1,43 @@
+{
+  "name": "lab-ben",
+  "version": "1.0.0",
+  "description": "Data Storage using Express",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "build": "mocha && eslint**",
+    "start": "node server.js",
+    "live": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BAyzenberg/lab-11-express-api.git"
+  },
+  "keywords": [
+    "Express",
+    "mocha",
+    "chai",
+    "data"
+  ],
+  "author": "Ben Ayzenberg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BAyzenberg/lab-11-express-api/issues"
+  },
+  "homepage": "https://github.com/BAyzenberg/lab-11-express-api#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.3.0",
+    "morgan": "^1.8.1"
+  }
+}
