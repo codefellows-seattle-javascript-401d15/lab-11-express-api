@@ -23,6 +23,29 @@ exports.fetchItem = function(schema, id) {
   if(!id) return Promise.reject(createError(400, 'id required'));
 
   return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
-    .then(data => data)    
+    .then(data => data)
     .catch(err => Promise.reject(createError(500, err.message)));
+};
+
+exports.updateItem = function(schema, id, planet){
+  return new Promise((resolve,reject) => {
+    if(!schema) return reject(new Error('schema required'));
+    if(!id) return reject(new Error('id required'));
+
+    return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
+      .then(data => {
+
+        let toUpdate = JSON.parse(data.toString());
+
+        if(planet.name) toUpdate.name = planet.name;
+        if(planet.universe) toUpdate.universe = planet.universe;
+
+        let updated = JSON.stringify(toUpdate);
+        fs.writeFileProm(`${DATA_URL}/${schema}/${id}.json`, updated);
+
+        return resolve(toUpdate);
+      })
+      .catch(err => reject(err));
+
+  });
 };

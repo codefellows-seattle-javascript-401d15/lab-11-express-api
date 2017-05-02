@@ -13,6 +13,14 @@ module.exports = function(router) {
 
   router.get('/api/planet/:id', (req,res) => {
     planetCrtl.fetchItem('planet', req.params.id)
-      .then(data => res.json(JSON.stringify(data.toString())));
+      .then(data => res.json(JSON.stringify(data.toString())))
+      .catch(err => res.send(err));
+  });
+
+  router.put('/api/planet/:id', (req,res) => {
+    let planet = new Planet(req.body.name, req.body.universe);
+    planetCrtl.updateItem('planet', req.params.id, planet)
+      .then(() => res.json(JSON.stringify(planet)))
+      .catch(err => res.send(err));
   });
 };
