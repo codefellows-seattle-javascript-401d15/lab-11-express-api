@@ -35,11 +35,16 @@ exports.fetchItem = function (blueprint, id) {
     return Promise.reject(err);
   })
   .then(() => {
+
     return fs.readFileAsync(pathUrlId);
   })
 
   .then((data) => {
-    return Promise.resolve(JSON.parse(data.toString()));
+    console.log(data);
+    // let item = JSON.parse(data.toString());
+    // console.log(item);
+    // return item
+    return Promise.resolve(data);
   });
 
 };

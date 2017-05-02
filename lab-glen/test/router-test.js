@@ -37,9 +37,9 @@ describe('Server function check', function () {
     before(done => {
       chai.request(server)
       .post('/api/weapon')
-      .send({name: 'destroyer', type: 'hammer'})
+      .send({name: 'destroyer', type: 'hammer', price: '300'})
       .end((err, res) => {
-        resource = JSON.parse(res.text.toString());
+        resource = JSON.parse(res.text);
         done();
       });
     });
@@ -53,36 +53,24 @@ describe('Server function check', function () {
       });
     });
     describe('/api/weapon endpoint', function () {
-      describe('A properly formatted request', function () {
-        it('should return a resource given proper ID', done => {
+      describe('An incorrectly formatted request', function () {
+        it('should return an error', done => {
           chai.request(server)
-          .get(`/api/weapon/${resource.id}`)
-          .end((err, res) => {
-            let expected = JSON.parse(res.text.toString());
-            console.log(expected);
-            expect(resource).to.deep.equal(expected);
-            done();
-          });
+        .get('/api/weapon/')
+        .end((err, res) => {
+          if(err) throw err;
+          expect(res).to.have(err);
         });
-        describe('An incorrectly formatted request', function () {
-          it('should return an error', done => {
-            chai.request(server)
-          .get('/api/weapon/id')
+          done();
+        });
+        it('should respond with a 400 on bad request', done => {
+          chai.request(server)
+          .post('/wrong')
+          .send({})
           .end((err, res) => {
-            if(err) throw err;
-            expect(res).to.have(err);
+            expect(res.status).to.equal(404);
           });
-            done();
-          });
-          it('should respond with a 400 on bad request', done => {
-            chai.request(server)
-            .post('/wrong')
-            .send({})
-            .end((err, res) => {
-              expect(res.status).to.equal(404);
-            });
-            done();
-          });
+          done();
         });
       });
     });
@@ -120,7 +108,7 @@ describe('Server function check', function () {
       });
       it('should respond with a 201 on proper request', done => {
         chai.request(server)
-        .get(`/api/weapon/:id=${resource.id}`)
+        .get(`/api/weapon/${resource.id}`)
         .send({})
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -162,7 +150,7 @@ describe('Server function check', function () {
       });
       it('should respond with a 201 on proper request', done => {
         chai.request(server)
-        .get(`/api/weapon/id:=${resource.id}`)
+        .delete(`/api/weapon/${resource.id}`)
         .send({})
         .end((err, res) => {
           expect(res.status).to.equal(200);

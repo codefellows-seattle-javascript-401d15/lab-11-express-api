@@ -17,7 +17,8 @@
     "chai-http": "^3.0.0",
     "debug": "^2.6.6",
     "eslint": "^3.19.0",
-    "mocha": "^3.3.0"
+    "mocha": "^3.3.0",
+    "morgan": "^1.8.1"
   },
   "dependencies": {
     "bluebird": "^3.5.0",
