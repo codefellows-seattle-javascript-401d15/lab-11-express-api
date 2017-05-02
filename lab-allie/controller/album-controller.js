@@ -1,10 +1,9 @@
 'use strict';
 
 const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs', {suffix: 'Prom'}));
+const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
 const DATA_URL = `${__dirname}/../data`;
-// const storage = {};
 
 module.exports = exports = {};
 
@@ -13,7 +12,7 @@ exports.createAlbum = function(schema, album) {
   if(!album) return Promise.reject(createError(400, 'Note required'));
   
   let jsonAlbum = JSON.stringify(album);
-  fs.writeFileProm(`${DATA_URL}/${schema}/${album.id}.json`, jsonAlbum)
+  return fs.writeFileProm(`${DATA_URL}/${schema}/${album.id}.json`, jsonAlbum)
   .then(() => album)
   .catch(err => Promise.reject(createError(500, err.message)));
 };
@@ -21,7 +20,7 @@ exports.createAlbum = function(schema, album) {
 exports.fetchAlbum = function(schema, id) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
   if(!id) return Promise.reject(createError(400, 'ID required'));
-  
+  console.log('in exports.fetchAlbum');
   return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => data)
   .catch(err => Promise.reject(createError(500, err.message)));

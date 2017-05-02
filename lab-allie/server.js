@@ -16,6 +16,4 @@ require('./routes/album-routes.js')(router);
 
 app.listen(PORT, () => console.log(`Listening on port, ${PORT}`));
 
-
-
 module.exports = app;
