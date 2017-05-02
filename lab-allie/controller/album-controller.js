@@ -26,21 +26,26 @@ exports.fetchAlbum = function(schema, id) {
   .catch(err => Promise.reject(createError(500, err.message)));
 };
 
-// exports.updateAlbum = function(schemaName, album) {
-//   if(!schemaName) return (new Error('Schema required'));
-//   if(!album) return (new Error('Album required'));
-//   
-//   let schema = storage[schemaName];
-//   if(!schema) return (new Error('Schema does not exist'));
-//   
-//   if(!schema[album.id]) return (new Error('Album does not exist'));
-//   // fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
-//   // .then(
-//     
-//   fs.writeFileProm(`${DATA_URL}/${schema}/${album.id}.json`)
-//   .then(() => album)
-//   .catch(err => Promise.reject(createError(500, err.message)));
-// };
+exports.updateAlbum = function(schema, id, newAlbum) {
+  if(!schema) return Promise.reject(createError(400, 'Schema required'));
+  if(!newAlbum) return Promise.reject(createError(400, 'Album required'));
+  
+  return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
+  .then(data => {
+    let storage = JSON.parse(data.toString());
+    if(newAlbum.artist) storage.artist = newAlbum.artist;
+    if(newAlbum.title) storage.title = newAlbum.title;
+    if(newAlbum.year) storage.year = newAlbum.year;
+    
+    let jsonStorage = JSON.stringify(storage);
+    // return jsonStorage;
+    
+    fs.writeFileProm(`${DATA_URL}/${schema}/${id}.json`, jsonStorage)
+    .then(() => storage)
+    .catch(err => Promise.reject(createError(500, err.message)));
+  })
+  .catch(err => Promise.reject(createError(500, err.message)));
+};
 
 exports.removeAlbum = function(schemaName, id) {
   if(!schemaName) return Promise.reject(createError(400, 'Schema required'));

@@ -4,14 +4,17 @@ const server = require('../server.js');
 const chai = require('chai');
 const expect = chai.expect;
 const http = require('chai-http');
+// const Promise = require('bluebird');
+// const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 
 chai.use(http);
 
 describe('Server module tests', function() {
-  // before(done => {
-  //   server.listen(3000);
-  //   done();
-  // });
+  let app;
+  before(done => {
+    app = server.listen(8000);
+    done();
+  });
   
   describe.only('POST method', function() {
     describe('create an item', function() {  
@@ -317,8 +320,8 @@ describe('Server module tests', function() {
     });
   });
   
-  // after(done => {
-  //   server.close();
-  //   done();
-  // });
+  after(done => {
+    app.close();
+    done();
+  });
 });
