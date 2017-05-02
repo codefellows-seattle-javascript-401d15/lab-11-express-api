@@ -1,0 +1,42 @@
+{
+  "name": "lab-teddy",
+  "version": "1.0.0",
+  "description": "lab-09",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tedsters/lab-09-single-resource-api-fs.git"
+  },
+  "keywords": [
+    "Promises",
+    "tests",
+    "mocha",
+    "fun"
+  ],
+  "author": "David Teddy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tedsters/lab-09-single-resource-api-fs/issues"
+  },
+  "homepage": "https://github.com/tedsters/lab-09-single-resource-api-fs#readme",
+  "devDependencies": {
+    "bluebird": "^3.5.0",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "debug": "^2.6.6",
+    "mocha": "^3.3.0",
+    "uuid": "^3.0.1"
+  },
+  "dependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "debug": "^2.6.6"
+  }
+}
