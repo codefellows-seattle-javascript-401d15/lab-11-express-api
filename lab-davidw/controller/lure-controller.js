@@ -31,21 +31,23 @@ exports.fetchItem = function(schema, id) {
     .catch(err => Promise.reject(createError(500, err.message)));
 };
 
-exports.updateItem = function(schema, id, newItem) {
+exports.updateItem = function(schema, lure) {
 
   if(!schema) return Promise.reject(createError(412, 'Schema to be updated required'));
-  if(!id) return Promise.reject(createError(412, 'item to be updated required'));
+  if(!lure) return Promise.reject(createError(412, 'item to be updated required'));
 
-  return fs.readFileProm(`%{DATA_URL}/${id}.json`)
-  .then( item => {
-    let  stringItem = JSON.parse(item.toString());
-    if(newItem.name) stringItem.name = newItem.name;
-    if(newItem.type) stringItem.type = newItem.type;
-    if(newItem.targets) stringItem.targets = newItem.targets;
-    if(newItem.water) stringItem.water = newItem.water;
-    if(newItem.date) stringItem.date = newItem.date;
+  return fs.readFileProm(`${DATA_URL}/${schema}/${lure.id}.json`)
+  .then(data => {
+    let  storage = JSON.parse(data.toString());
+    storage.name = lure.name || storage.name;
+    storage.type = lure.type || storage.type;
+    storage.targets = lure.targets || storage.targets;
+    storage.water = lure.water || storage.water;
+    storage.date = lure.date || storage.date;
 
-    return fs.writeFileProm(`${DATA_URL}/${schema}/${item.id}.json`, JSON.stringify(stringItem));
+    let jsonStorage = JSON.stringify(storage);
+
+    return fs.writeFileProm(`${DATA_URL}/${schema}/${lure.id}.json`, JSON.stringify(jsonStorage));
 
   })
   .catch(err => Promise.reject(createError(500, err.message)));

@@ -4,19 +4,20 @@
 const server = require('../server');
 const chai = require('chai');
 const http = require('chai-http');
+const Promise = require('bluebird');
 const expect = chai.expect;
-const app = ('express');
+const DATA_URL = `${__dirname}/../data`;
 
 chai.use(http);
-// app.use(router);
 
 describe('server module', function() {
+  let app;
   before(done => {
-    app.listen(3000);
+    app = server.listen(3030);
     done();
   });
   after(done => {
-    server.close();
+    app.close();
     done();
   });
 });
@@ -79,22 +80,46 @@ describe('GET method', function() {
         });
       });
     });
+
+    describe('PUT method', function() {
+      let ids = [];
+      before(done => {
+        chai.request(server)
+        .post('/api/lure')
+        .send({name: 'hello', type: 'rattler', targets: 'trout'})
+        .end((err, res) => {
+          let lure = JSON.parse(res.text);
+          ids.push(lure.id);
+          console.log(ids);
+          done();
+        });
+      });
+      after(done => {
+        ids.forEach(id => {
+          fs.unlinkProm(`${DATA_URL}/lure/${id}.json`);
+          done();
+        });
+      });
+
+      describe('requests made to api/lure', function() {
+        it('should have response status of 200', done => {
+          done();
+        });
+        it('should have a response status of 404 if given no id', done => {
+
+          done();
+        });
+        it('should have a respone status of 404 if given bad or no schema', done => {
+          done();
+        });
+        it('should modify a given record if given the correct inputs', done => {
+          done();
+        });
+      });
+
+
+
+    });
+    describe('requests made to an invalid route');
   });
-  // describe('POST method', function() {
-  //
-  // });
-  //
-  // describe('PUT method', function() {
-  //
-  //
-  //
-  //
-  // });
-  //
-  // describe('DELETE method', function() {
-  //
-  //
-  //
-  //
-  // });
 });
