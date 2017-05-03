@@ -26,21 +26,21 @@ exports.fetchAlbum = function(schema, id) {
   .catch(err => Promise.reject(createError(500, err.message)));
 };
 
-exports.updateAlbum = function(schema, id, newAlbum) {
+exports.updateAlbum = function(schema, album, id) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
-  if(!newAlbum) return Promise.reject(createError(400, 'Album required'));
+  if(!album) return Promise.reject(createError(400, 'Album required'));
+  console.log('album', album);
   
   return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => {
     let storage = JSON.parse(data.toString());
-    if(newAlbum.artist) storage.artist = newAlbum.artist;
-    if(newAlbum.title) storage.title = newAlbum.title;
-    if(newAlbum.year) storage.year = newAlbum.year;
+    storage.artist = album.artist || storage.artist;
+    storage.title = album.title || storage.title;
+    storage.year = album.year || storage.year;
     
     let jsonStorage = JSON.stringify(storage);
-    // return jsonStorage;
     
-    fs.writeFileProm(`${DATA_URL}/${schema}/${id}.json`, jsonStorage)
+    return fs.writeFileProm(`${DATA_URL}/${schema}/${id}.json`, jsonStorage)
     .then(() => storage)
     .catch(err => Promise.reject(createError(500, err.message)));
   })

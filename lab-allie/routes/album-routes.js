@@ -16,15 +16,17 @@ module.exports = function(router) {
   router.get('/api/album/:id', (req, res) => {
     console.log('in router.get');
     albumCtrl.fetchAlbum('album', req.params.id)
-    .then(data => res.json(JSON.stringify(data.toString())))
+    .then(data => res.json(data.toString()))
     .catch(err => res.send(err));
     console.log(req.params.id);
   });
   
-  router.put('/api/note', (req, res) => {
-    albumCtrl.updateItem('note', req.body)
-    .then(data => res.json(data))
-    .catch(err => res.status(404).send(err.message));
+  router.put('/api/album/:id', (req, res) => {
+    if(req.params.id) {
+      albumCtrl.updateAlbum('album', req.body, req.params.id)
+      .then(data => res.json(data))
+      .catch(err => res.status(404).send(err.message));
+    }
   });
   
   router.delete('/api/album/:id', (req, res) => {
