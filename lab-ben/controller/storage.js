@@ -47,5 +47,5 @@ exports.deleteItem = function(schema, id) {
 
   return fs.unlinkProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(() => 'success')
-  .catch(err => Promise.reject(createError(500, err.message)));
+  .catch(err => Promise.reject(createError(404, err.message)));
 };
