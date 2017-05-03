@@ -142,36 +142,36 @@ describe('Server function check', function() {
        resource = JSON.parse(res.text.toString());
        done();
      });
-   });
-   after(done => {
-     chai.request(server)
-     .delete('/api/candy')
-     .query({id: resource.id})
-     .end(() => {
-       console.error();
-       done();
-     });
-   });
-   describe('/api/candy update endpoint', function () {
-     it('should respond with a 400 on bad request', done => {
-       chai.request(server)
-       .post('/wrong')
-       .send({})
-       .end((err, res) => {
-         expect(res.status).to.equal(400);
-         done();
-       });
-     });
-     it('should respond with a 201 on proper request', done => {
-       chai.request(server)
-       .get(`/api/candy?id=${resource.id}`)
-       .send({})
-       .end((err, res) => {
-         expect(res.status).to.equal(201);
-         done();
-       });
-     });
-   });
+    });
+    after(done => {
+      chai.request(server)
+      .delete('/api/candy')
+      .query({id: resource.id})
+      .end(() => {
+        console.error();
+        done();
+      });
+    });
+    describe('/api/candy update endpoint', function () {
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .post('/wrong')
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+      it('should respond with a 201 on proper request', done => {
+        chai.request(server)
+        .get(`/api/candy?id=${resource.id}`)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(201);
+          done();
+        });
+      });
+    });
   });
   after(done => {
     server.close();
