@@ -25,7 +25,7 @@ exports.fetchCar = function(schemaName, id) {
 
   return fs.readFileProm(`${DATA_URL}/${schemaName}/${id}.json`)
   .then(data => data)
-  .catch(err => Promise.reject(createError(400, err.message)));
+  .catch(err => Promise.reject(createError(500, err.message)));
 };
 
 exports.fetchDelete = function(schemaName, id){
@@ -37,6 +37,24 @@ exports.fetchDelete = function(schemaName, id){
   .catch(err => Promise.reject(createError(400, err.message)));
 };
 
+exports.fetchPut = function(schemaName, auto) {
+  if(!schemaName) return Promise.reject(createError(400, 'SchemaName required'));
+  if(!auto) return Promise.reject(createError(400, 'auto required'));
+
+  return fs.readFileProm(`${DATA_URL}/${schemaName}/${auto.id}.json`)
+  .then(data => {
+    let storage = JSON.parse(data.toString());
+    storage.make = auto.make || storage.make;
+    storage.model = auto.model || storage.model;
+
+    let jsonStorage = JSON.stringify(storage);
+
+    return fs.writeFileProm(`${DATA_URL}/${schemaName}/${auto.id}.json`, jsonStorage)
+    .then(() => storage)
+    .catch(err => Promise.reject(createError(500, err.message)));
+  })
+  .catch(err => Promise.reject(createError(500, err.message)));
+};
 //exports.fetchPut = function(schemaName, id) {
 
   //return new Promise((resolve, reject) => {

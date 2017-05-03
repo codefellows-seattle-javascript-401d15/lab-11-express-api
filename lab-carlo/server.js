@@ -2,12 +2,13 @@
 
 const express = require('express');
 const morgan = require('morgan');
+const jsonParser = require('body-parser').json();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const autoRouter = require('./route/car-routes');
 
-//app.use(jsonParser);
+app.use(jsonParser);
 app.use(morgan('dev'));
 
 app.use(autoRouter);
