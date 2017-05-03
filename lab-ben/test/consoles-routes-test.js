@@ -33,6 +33,7 @@ describe('Server module', function() {
           done();
         });
       });
+
       it('should respond with a 400 on bad request', done => {
         chai.request(server)
         .post('/api/consoles')
@@ -42,6 +43,7 @@ describe('Server module', function() {
           done();
         });
       });
+
       after(done => {
         chai.request(server)
         .delete(`/api/consoles/${this.result.id}`)
@@ -67,6 +69,7 @@ describe('Server module', function() {
           done();
         });
       });
+
       it('should respond with a status of 200 on proper request', done => {
         chai.request(server)
         .get(`/api/consoles/${this.result.id}`)
@@ -75,6 +78,7 @@ describe('Server module', function() {
           done();
         });
       });
+
       it('should respond with a status of 404 for a valid request with an invalid id', done => {
         chai.request(server)
         .get('/api/consoles/')
@@ -94,7 +98,7 @@ describe('Server module', function() {
       });
     });
   });
-  //
+
   describe('PUT method', function() {
     describe('/api/consoles', function() {
       before(done => {
@@ -111,27 +115,31 @@ describe('Server module', function() {
         });
       });
 
-      it('should respond with a status of 200 on proper request', done => {
+      it('should respond with a status of 202 on proper request', done => {
         chai.request(server)
         .put(`/api/consoles/${this.result.id}`)
         .send({
           name: 'GameCube',
           manufacturer: 'Nintendo',
-          releaseYear: 2001,
+          releaseDate: 2001,
         })
         .end((err, res) => {
           expect(res).status(200);
           done();
         });
       });
+
       it('should respond with a status of 400 on a bad request', done => {
         chai.request(server)
-        .put(`/api/consoles/${this.result.id}`)
+        .put('/api/consoles/this.resu')
+
         .end((err, res) => {
           expect(res).status(400);
+          expect(res.text).to.equal('bad request');
           done();
         });
       });
+
       after(done => {
         chai.request(server)
         .delete(`/api/consoles/${this.result.id}`)
@@ -166,6 +174,7 @@ describe('Server module', function() {
           done();
         });
       });
+      
       it('should respond with a 404 when an invalid id is used', done => {
         chai.request(server)
         .delete('/api/consoles/')
