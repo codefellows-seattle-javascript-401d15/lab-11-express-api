@@ -1,13 +1,10 @@
 'use strict';
 
-const debug = require('debug')('http:server');
 const Car = require('../model/vehicles.js');
-const storage = require('../lib/storage');
+const carContr = require('../controller/vehicles.js');
 
 module.exports = function(router){
   router.get('/api/car', function(req, res){
-    console.log(req.url.query.id, 'heres the id');
-    debug('GET /api/car');
     if(req.url.query.id){
       storage.fetchCar('car', req.url.query.id)
       .then(data => {
@@ -29,10 +26,9 @@ module.exports = function(router){
   });
 
   router.post('/api/car', function(req, res){
-    debug('POST /api/car');
     try {
-      let car = new Car(req.body.name, req.body.type);
-      storage.createCar('car', car);
+      let car = new Car(req.body.name, req.body.type, req.body.wheels, req.body.allWheelDrive);
+      carContr.createCar('car', car);
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.write(JSON.stringify(car));
       res.end();

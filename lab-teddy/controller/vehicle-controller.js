@@ -45,16 +45,14 @@ exports.updateCar = function(schema, car){
     let carStorage = JSON.parse(data.toString());
     carStorage.name = car.name || carStorage.name;
     carStorage.type = car.type || carStorage.type;
+    carStorage.wheels = car.wheels || carStorage.wheels;
+    carStorage.date = car.date || carStorage.date;
 
     jsonStorage = JSON.stringify(carStorage);
 
     return fs.writeFileProm(`${DATA_URL}/${schema}/${car.id}.json`, jsonStorage)
     .then(() => jsonStorage);
-    // .catch(err => Promise.reject(err.message));
   });
-  // .then(() => jsonStorage)
-  // .catch(err => console.error(err));
-  // //});
 };
 
 exports.removeCar = function(schema, id){
