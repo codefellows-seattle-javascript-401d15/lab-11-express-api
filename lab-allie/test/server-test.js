@@ -16,7 +16,7 @@ describe('Server module tests', function() {
     done();
   });
   
-  describe.only('POST method', function() {
+  describe('POST method', function() {
     describe('create an item', function() {  
       it('should create an artist', done => {
         chai.request(server)
@@ -86,7 +86,7 @@ describe('Server module tests', function() {
     });
   });
   
-  describe.only('GET method', function() {
+  describe('GET method', function() {
     let testGet = [];
     before(done => {
       chai.request(server)
@@ -120,10 +120,10 @@ describe('Server module tests', function() {
           done();
         });
       });
-      
+        
       it('should return an error on a bad request', done => {
         chai.request(server)
-        .get('/api/blah')
+        .get('/api/album')
         .end((err, res) => {
           if (err) console.error(err);
           expect(res.status).to.equal(404);
@@ -172,8 +172,10 @@ describe('Server module tests', function() {
       .post('/api/album')
       .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
       .end((err, res) => {
-        let test = JSON.parse(res.text);
+        let test = JSON.parse(res.body);
         testPut.push(test);
+        console.log('test.title', test.title);
+        console.log('testput[0].id', testPut[0].id);
         done();
       });
     });
@@ -181,10 +183,11 @@ describe('Server module tests', function() {
     describe('the entry should update', function() {
       it('should change the artist name', done => {
         chai.request(server)
-        .post('/api/album')
+        .put(`/api/album/${testPut[0].id}`)
         .send({'artist': 'Elton John', 'title': 'Honky Chateau', 'year': '1972'})
         .end((err, res) => {
           if (err) console.error(err);
+          console.log('res.body', res.body);
           expect(res.body.artist).to.equal('Elton John');
           done();
         });
@@ -192,7 +195,7 @@ describe('Server module tests', function() {
       
       it('should change the album title', done => {
         chai.request(server)
-        .post('/api/album')
+        .put(`/api/album/${testPut[0].id}`)
         .send({'artist': 'Elton John', 'title': 'Honky Chateau', 'year': '1972'})
         .end((err, res) => {
           if (err) console.error(err);
@@ -203,7 +206,7 @@ describe('Server module tests', function() {
       
       it('should change the year', done => {
         chai.request(server)
-        .post('/api/album')
+        .put(`/api/album/${testPut[0].id}`)
         .send({'artist': 'Elton John', 'title': 'Honky Chateau', 'year': '1972'})
         .end((err, res) => {
           if (err) console.error(err);
@@ -225,18 +228,18 @@ describe('Server module tests', function() {
       
       it('should return a status of 200 on proper request', done => {
         chai.request(server)
-        .put('/api/album')
+        .put(`/api/album/${testPut[0].id}`)
         .send({id: testPut[0].id, artist: testPut[0].artist, title: testPut[0].title, year: testPut[0].year})
         .end((err, res) => {
           if (err) console.error(err);
-          expect(res.status).to.equal(200);
+          expect(res).to.have.status(200);
           done();
         });
       });
       
       it('should return an error on a bad request', done => {
         chai.request(server)
-        .get('/api/blah')
+        .get('/api/album')
         .end((err, res) => {
           if (err) console.error(err);
           expect(res.status).to.equal(404);
@@ -261,7 +264,7 @@ describe('Server module tests', function() {
       .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
       .end((err, res) => {
         if (err) console.error(err);
-        testDelete = JSON.parse(res.text.toString());
+        testDelete = JSON.parse(res.body).id;
       });
       done();
     });
@@ -269,7 +272,7 @@ describe('Server module tests', function() {
     describe('it should delete the item', function() {
       it('should successfully remove the name when provided an id', done => {
         chai.request(server)
-        .del(`/api/album?id=${testDelete.id}`)
+        .del(`/api/album?id=${testDelete}`)
         .end((err) => {
           if (err) console.error(err);
           expect(testDelete.name).to.be.empty;
