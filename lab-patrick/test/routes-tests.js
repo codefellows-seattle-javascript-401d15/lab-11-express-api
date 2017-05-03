@@ -127,44 +127,38 @@ describe('server module', function() {
   });
 
   describe('POST method', function(){
-  // let cars =[];
-    before(done => {
-      chai.request(server);
+
+
+    it('should have a response ststus of 404 give incorrct inputs', done =>{
+      chai.request(server)
+      .put('api/car/')
+      .send({})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+      });
       done();
     });
-  });
-  after(done =>{
-    done();
-  });
-  it('should have a response ststus of 404 give incorrct inputs', done =>{
-    chai.request(server)
-    .put('api/car/')
-    .send({})
-    .end((err, res) => {
-      expect(res).to.have.status(400);
+    it('should return posted car given the correct inputs', done =>{
+      chai.request(server)
+      .post('/api/car/')
+      .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
+      .end((err, res) => {
+        let car = JSON.parse(res.body);
+        expect(car.name).to.deep.equal('WRX');
+        fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
+        done();
+      });
     });
-    done();
-  });
-  it('should return posted car given the correct inputs', done =>{
-    chai.request(server)
-    .post('/api/car/')
-    .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
-    .end((err, res) => {
-      let car = JSON.parse(res.body);
-      expect(car.name).to.deep.equal('WRX');
-      fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
-      done();
-    });
-  });
-  it('should return status 200 given the correct inputs', done =>{
-    chai.request(server)
-    .post('/api/car/')
-    .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
-    .end((err, res) => {
-      let car = JSON.parse(res.body);
-      expect(res).to.have.status(200);
-      fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
-      done();
+    it('should return status 200 given the correct inputs', done =>{
+      chai.request(server)
+      .post('/api/car/')
+      .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
+      .end((err, res) => {
+        let car = JSON.parse(res.body);
+        expect(res).to.have.status(200);
+        fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
+        done();
+      });
     });
   });
 
