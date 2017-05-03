@@ -28,20 +28,25 @@ exports.fetchItem = function(schema, id){
   .catch(err => Promise.reject(createError(400, err.message)));
 };
 
-exports.updateItem = function(schema, id, updateCar){
-  console.log('got here');
+exports.updateItem = function(schema, car){
   if(!schema) return Promise.reject(createError(400, 'Scheme required'));
-  if(!id) return Promise.reject(createError(400, 'Id required'));
+  if(!car) return Promise.reject(createError(400, 'Car required'));
 
-  return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
+  return fs.readFileProm(`${DATA_URL}/${schema}/${car.id}.json`)
   .then(data => {
-    let dataString = JSON.parse(data.toString());
-    if(updateCar.name) dataString.name = updateCar.name;
-    if(updateCar.model) dataString.model = updateCar.model;
-    if(updateCar.horsepower) dataString.horsepower = updateCar.horsepower;
-    fs.writeFIleProm(`${DATA_URL}/${schema}/${id}.json`, JSON.stringify(dataString));
+    let storage = JSON.parse(data.toString());
+    storage.name = car.name || storage.name;
+    storage.model = car.model || storage.model;
+    storage.horsepower = car.horsepower || storage.horsepower;
+
+    let jsonStorage = JSON.stringify(storage);
+
+    return fs.writeFileProm(`${DATA_URL}/${schema}/${car.id}.json`, jsonStorage)
+    .then(()=> storage)
+    .catch(err => Promise.reject(createError(500, err.message)));
   })
-  .catch(err => Promise.reject(createError(400, err.message)));
+  .catch(err => Promise.reject(createError(500, err.message)));
+
 };
 
 exports.deleteItem = function(schema, id){
