@@ -35,9 +35,5 @@ describe('fishingLure module', function() {
       expect(newLure.id).to.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
       done();
     });
-    it('should have a date value, as provided by the js Date constructor', done => {//2017-05-02T04:42:58.106Z
-      expect(newLure.date).to.match(/[0-9a-f]{4}-[0-9a-f]{2}:[0-9a-f]{5}:[0-9a-f]{2}:[0-9a-f]{2}.[0-9a-f]{4}/);
-      done();
-    });
   });
 });

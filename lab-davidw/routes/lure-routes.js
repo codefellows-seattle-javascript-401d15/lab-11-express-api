@@ -20,15 +20,13 @@ module.exports = function(router) {
   router.get('/api/lure/:id', cors, (req, res) => {
     lureCtrl.fetchItem('lure', req.params.id)
     .then(data => res.json(data.toString()))
-    .catch(err => res.send(err));
+    .catch(err => res.status(404).send(err.message));
   });
 
-  router.put('/api/lure/:id', cors, jsonParser,(req, res) => {
-    // let lure = new Lure('lure', req.body);
-
-    lureCtrl.updateItem(req.params.id, req.body)
-    .then(data => res.send(JSON.stringify(data)))
-    .catch(err => res.send(err));
+  router.put('/api/lure',(req, res) => {
+    lureCtrl.updateItem('lure', req.body)
+    .then(data => res.json(data))
+    .catch(err => res.status(404).send(err.message));
   });
 
   router.delete('/api/lure/:id', cors, (req, res) => {

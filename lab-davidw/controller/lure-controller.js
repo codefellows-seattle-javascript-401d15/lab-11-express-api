@@ -4,21 +4,16 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
 const DATA_URL = `${__dirname}/../data`;
-// const app = require('express');
-// const morgan = require('morgan');
-// const mkdirp = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-
-// app.use(morgan);
 
 module.exports = exports = {};
 
-exports.createItem = function(schema, item) {
+exports.createItem = function(schema, lure) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
-  if(!item) return Promise.reject(createError(400, 'item required'));
+  if(!lure) return Promise.reject(createError(400, 'lure required'));
 
-  let  jsonItem = JSON.stringify(item);
-  return fs.writeFileProm(`${DATA_URL}/${schema}/${item.id}.json`, jsonItem)
-  .then(() => item)
+  let  jsonLure = JSON.stringify(lure);
+  return fs.writeFileProm(`${DATA_URL}/${schema}/${lure.id}.json`, jsonLure)
+  .then(() => lure)
   .catch(err => Promise.reject(createError(500, err.message)));
 };
 
@@ -34,7 +29,7 @@ exports.fetchItem = function(schema, id) {
 exports.updateItem = function(schema, lure) {
 
   if(!schema) return Promise.reject(createError(412, 'Schema to be updated required'));
-  if(!lure) return Promise.reject(createError(412, 'item to be updated required'));
+  if(!lure) return Promise.reject(createError(412, 'lure to be updated required'));
 
   return fs.readFileProm(`${DATA_URL}/${schema}/${lure.id}.json`)
   .then(data => {
@@ -43,12 +38,12 @@ exports.updateItem = function(schema, lure) {
     storage.type = lure.type || storage.type;
     storage.targets = lure.targets || storage.targets;
     storage.water = lure.water || storage.water;
-    storage.date = lure.date || storage.date;
 
     let jsonStorage = JSON.stringify(storage);
 
-    return fs.writeFileProm(`${DATA_URL}/${schema}/${lure.id}.json`, JSON.stringify(jsonStorage));
-
+    return fs.writeFileProm(`${DATA_URL}/${schema}/${lure.id}.json`, jsonStorage)
+    .then(() => storage)
+    .catch(err => Promise.reject(createError(500, err.message)));
   })
   .catch(err => Promise.reject(createError(500, err.message)));
 };
