@@ -1,6 +1,8 @@
 'use strict';
 
+const del = require('del');
 const Promise = require('bluebird');
+const mkdirp = require('mkdirp-promise');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
 
@@ -10,12 +12,16 @@ const DATA_URL = `${__dirname}/../data`;
 
 exports.createItem = function(schema, planet) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
-  if(!planet) return Promise.reject(createError(400, 'Planet required'));
+  if(!planet || !planet.name || !planet.universe) return Promise.reject(createError(400, 'Planet with name and universe required'));
 
-  let jsonPlanet = JSON.stringify(planet);
-  return fs.writeFileProm(`${DATA_URL}/${schema}/${planet.id}.json`, jsonPlanet)
-    .then(() => planet)
-    .catch(err => Promise.reject(createError(500, err.message)));
+  return mkdirp(`${DATA_URL}/${schema}`)
+    .then(() => {
+      let jsonPlanet = JSON.stringify(planet);
+      fs.writeFileProm(`${DATA_URL}/${schema}/${planet.id}.json`, jsonPlanet)
+        .then(() => planet)
+        .catch(err => Promise.reject(createError(500, err.message)));
+    })
+    .catch(err => err.message);
 };
 
 exports.fetchItem = function(schema, id) {
@@ -47,5 +53,16 @@ exports.updateItem = function(schema, id, planet){
       })
       .catch(err => reject(err));
 
+  });
+};
+
+exports.deleteItem = function(schema, id){
+  return new Promise((resolve,reject) => {
+    if(!schema) return reject(new Error('schema required'));
+    if(!id) return reject(new Error('id required'));
+
+    del([`${DATA_URL}/${schema}/${id}.json`]);
+
+    resolve();
   });
 };
