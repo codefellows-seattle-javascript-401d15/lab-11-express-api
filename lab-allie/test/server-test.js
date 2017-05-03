@@ -16,8 +16,8 @@ describe('Server module tests', function() {
     done();
   });
   
-  describe('POST method', function() {
-    describe.only('create an item', function() {  
+  describe.only('POST method', function() {
+    describe('create an item', function() {  
       it('should create an artist', done => {
         chai.request(server)
         .post('/api/album')
@@ -86,26 +86,27 @@ describe('Server module tests', function() {
     });
   });
   
-  describe('GET method', function() {
-    let testGet;
+  describe.only('GET method', function() {
+    let testGet = [];
     before(done => {
       chai.request(server)
       .post('/api/album')
       .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
       .end((err, res) => {
-        testGet = JSON.parse(res.text.toString());
+        let test = JSON.parse(res.body);
+        testGet.push(test);
+        done();
       });
-      done();
     });
     
     describe('A request should return an item', function() {
       it('should return the correct response if the id is passed in', done => {
         chai.request(server)
-        .get(`/api/album/${testGet.id}`)
+        .get(`/api/album/${testGet[0].id}`)
         .end((err, res) => {
           if (err) console.error(err);
-          let expectedResult = JSON.parse(res.text.toString());
-          expect(testGet).to.deep.equal(expectedResult);
+          let expectedResult = JSON.parse(res.body);
+          expect(testGet[0]).to.deep.equal(expectedResult);
           done();
         });
       });
@@ -173,7 +174,6 @@ describe('Server module tests', function() {
       .end((err, res) => {
         let test = JSON.parse(res.text);
         testPut.push(test);
-        console.log('testput array', testPut);
         done();
       });
     });

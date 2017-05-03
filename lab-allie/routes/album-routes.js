@@ -6,7 +6,6 @@ const albumCtrl = require('../controller/album-controller.js');
 module.exports = function(router) {
   router.post('/api/album', (req, res) => {
     let album = new Album(req.body.artist, req.body.title, req.body.year, req.body.dateCreated);
-    console.log('in router.post');
     
     albumCtrl.createAlbum('album', album)
     .then(album => res.json(JSON.stringify(album)))
@@ -14,11 +13,9 @@ module.exports = function(router) {
   });
   
   router.get('/api/album/:id', (req, res) => {
-    console.log('in router.get');
     albumCtrl.fetchAlbum('album', req.params.id)
     .then(data => res.json(data.toString()))
     .catch(err => res.send(err));
-    console.log(req.params.id);
   });
   
   router.put('/api/album/:id', (req, res) => {
@@ -32,6 +29,5 @@ module.exports = function(router) {
   router.delete('/api/album/:id', (req, res) => {
     albumCtrl.removeAlbum('album', req.params.id)
     .catch(err => res.send(err));
-    console.log('in router.delete');
   });
 };

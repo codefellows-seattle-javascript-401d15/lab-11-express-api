@@ -20,7 +20,6 @@ exports.createAlbum = function(schema, album) {
 exports.fetchAlbum = function(schema, id) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
   if(!id) return Promise.reject(createError(400, 'ID required'));
-  console.log('888888888');
   return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => data)
   .catch(err => Promise.reject(createError(500, err.message)));
@@ -29,7 +28,6 @@ exports.fetchAlbum = function(schema, id) {
 exports.updateAlbum = function(schema, album, id) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
   if(!album) return Promise.reject(createError(400, 'Album required'));
-  console.log('album', album);
   
   return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => {
