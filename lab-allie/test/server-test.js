@@ -4,8 +4,8 @@ const server = require('../server.js');
 const chai = require('chai');
 const expect = chai.expect;
 const http = require('chai-http');
-// const Promise = require('bluebird');
-// const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
+const Promise = require('bluebird');
+const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 
 chai.use(http);
 
@@ -16,16 +16,15 @@ describe('Server module tests', function() {
     done();
   });
   
-  describe.only('POST method', function() {
-    describe('create an item', function() {  
+  describe('POST method', function() {
+    describe.only('create an item', function() {  
       it('should create an artist', done => {
         chai.request(server)
         .post('/api/album')
         .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
         .end((err, res) => {
-          if (err) console.error(err);
-          console.log(res.body);
-          // expect(res.body.artist).to.equal('Billy Joel');
+          if (err) console.error('oh no!', err);
+          expect(JSON.parse(res.body).artist).to.equal('Billy Joel');
           done();
         });
       });
@@ -36,7 +35,7 @@ describe('Server module tests', function() {
         .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
         .end((err, res) => {
           if (err) console.error(err);
-          expect(res.body.title).to.equal('An Innocent Man');
+          expect(JSON.parse(res.body).title).to.equal('An Innocent Man');
           done();
         });
       });
@@ -47,7 +46,7 @@ describe('Server module tests', function() {
         .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
         .end((err, res) => {
           if (err) console.error(err);
-          expect(res.body.year).to.equal('1983');
+          expect(JSON.parse(res.body).year).to.equal('1983');
           done();
         });
       });
@@ -166,15 +165,17 @@ describe('Server module tests', function() {
   });
   
   describe('PUT method', function(){
-    let testPut;
+    let testPut = [];
     before(done => {
       chai.request(server)
       .post('/api/album')
       .send({'artist': 'Billy Joel', 'title': 'An Innocent Man', 'year': '1983'})
       .end((err, res) => {
-        testPut = JSON.parse(res.text.toString());
+        let test = JSON.parse(res.text);
+        testPut.push(test);
+        console.log('testput array', testPut);
+        done();
       });
-      done();
     });
     
     describe('the entry should update', function() {
@@ -224,7 +225,8 @@ describe('Server module tests', function() {
       
       it('should return a status of 200 on proper request', done => {
         chai.request(server)
-        .get(`/api/album?id=${testPut.id}`)
+        .put('/api/album')
+        .send({id: testPut[0].id, artist: testPut[0].artist, title: testPut[0].title, year: testPut[0].year})
         .end((err, res) => {
           if (err) console.error(err);
           expect(res.status).to.equal(200);
@@ -244,10 +246,8 @@ describe('Server module tests', function() {
     });
         
     after(done => {
-      chai.request(server)
-      .delete('api/album')
-      .query({id: testPut.id})
-      .end(() => {
+      testPut.forEach(test => {
+        fs.unlinkProm(`${__dirname}/../data/album/${test.id}.json`);
         done();
       });
     });
