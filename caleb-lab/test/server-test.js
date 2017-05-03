@@ -30,7 +30,7 @@ describe('server module', function(){
   describe('POST', function(){
     let app;
     before(done => {
-      app = server.listen(4000);
+      app = server.listen(5000);
       done();
     });
     after(done => {
@@ -108,10 +108,9 @@ describe('server module', function(){
   });
 
 
-
-
   describe('DELETE', function(){
     let notes = [];
+    let app;
     before(done => {
       chai.request(server)
       .post('/api/note')
@@ -120,34 +119,31 @@ describe('server module', function(){
         console.error(err);
         let note = JSON.parse(res.body);
         notes.push(note);
-        console.log(notes);
         done();
       });
-    });
-    after(done => {
-      notes.forEach(note => {
-        fs.unlinkProm(`${__dirname}/../data/note/${note.id}.json`);
+      after(done => {
+        app.close();
         done();
       });
-    });
-    //Success
-    it('should delete a file successfully, and return 200', function(){
-      chai.request(server)
-      .delete('/api/note')
-      .send({id: notes[0].id})
-      .end((err, res) => {
-        console.log('You have successfully failed');
-        expect(res).to.have.status(200);
+      //Success
+      it('should delete a file successfully, and return 200', function(){
+        chai.request(server)
+        .delete('/api/note')
+        .send({id: notes[0].id})
+        .end((err, res) => {
+          console.log('You have successfully deleted');
+          expect(res).to.have.status(200);
+        });
       });
-    });
-    //failure
-    it('should fail to delete a file, and return error 404', function(){
-      chai.request(server)
-      .delete('/api/knowte')
-      .send({id: notes[0].id})
-      .end((err, res) => {
-        console.log('You have successfully failed');
-        expect(res).to.have.status(200);
+      //failure
+      it('should fail to delete a file, and return error 404', function(){
+        chai.request(server)
+        .delete('/api/knowte')
+        .send({id: notes[0].id})
+        .end((err, res) => {
+          console.log('You have successfully failed');
+          expect(res).to.have.status(404);
+        });
       });
     });
   });
