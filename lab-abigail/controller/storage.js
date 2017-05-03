@@ -46,15 +46,12 @@ exports.fetchItem = function(schema, id) {
   .catch(err => Promise.reject(createError(500, err.message)));
 };
 
-// exports.deleteItem = function(schema, id) {
-//   debug('#deleteItem');
-//
-//   if(!schema) return Promise.reject(new Error('schema required'));
-//   if(!id) return Promise.reject(new Error('id required'));
-//
-//   return fs.unlinkProm(`${URL}/${id}.json`)
-//   .then(food => {
-//     console.log('Food deleted');
-//   })
-//   .catch(console.error);
-// };
+exports.deleteItem = function(schema, id) {
+
+  if(!schema) return Promise.reject(new Error('schema required'));
+  if(!id) return Promise.reject(new Error('id required'));
+
+  return fs.unlinkProm(`${URL}/${id}.json`)
+  .then(food => food)
+  .catch(err => Promise.reject(createError(500, err.message)));
+};
