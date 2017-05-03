@@ -55,9 +55,7 @@
 * write tests to ensure your `/api/simple-resource-name` endpoint responds as described for each condition below:
  * `GET` - test 404, responds with 'not found' for valid request made with an id that was not found
  * `GET` - test 200, response body like `{<data>}` for a request made with a valid id
- * `PUT` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
  * `PUT` - test 200, response body like  `{<data>}` for a post request with a valid body
- * `POST` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
  * `POST` - test 200, response body like  `{<data>}` for a post request with a valid body
 
 ## Bonus
