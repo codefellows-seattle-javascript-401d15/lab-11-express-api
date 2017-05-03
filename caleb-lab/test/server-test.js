@@ -3,11 +3,12 @@
 const server = require('../server.js');
 const chai = require('chai');
 const http = require('chai-http');
-const expect = chai.expect;
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
+const expect = chai.expect;
 
 chai.use(http);
+
 
 describe('server module', function(){
   let app;
@@ -25,15 +26,45 @@ describe('server module', function(){
 
     });
   });
-  describe('POST', function(){
-    describe('the post to /api/note', function(){
-      it('should POST a new note in the data folder', function(){
 
+  describe('POST', function(){
+    let app;
+    before(done => {
+      app = server.listen(4000);
+      done();
+    });
+    after(done => {
+      app.close();
+      done();
+    });
+    describe('the post to /api/note', function(){
+      it('should POST a new note, and return a 200 error', done => {
+        chai.request(server)
+        .post('/api/note')
+        .send({name: 'hello', details: 'wat-man'})
+        .end((err, res) => {
+          console.error(err);
+          expect(res).to.have.status(200);
+          done();
+        });
+      });
+      it('should attempt to post and fail, with a 404 err', done => {
+        chai.request(server)
+        .post('/api/note/na-na-na-na-na-na-na-na-na-na-na-na-na-na-na-na')
+        .send({name: 'hello', details: 'wat-man'})
+        .end((err, res) => {
+          console.log(err);
+          expect(res).to.have.status(404);
+          done();
+        });
       });
     });
   });
+
+
+
   describe('PUT', function(){
-    let ids = [];
+    let notes = [];
     before(done => {
       chai.request(server)
       .post('/api/note')
@@ -41,13 +72,13 @@ describe('server module', function(){
       .end((err, res) => {
         console.error(err);
         let note = JSON.parse(res.body);
-        ids.push(note.id);
-        console.log(ids);
+        notes.push(note);
+        console.log(notes);
         done();
       });
     });
     after(done => {
-      ids.forEach( note => {
+      notes.forEach(note => {
         fs.unlinkProm(`${__dirname}/../data/note/${note.id}.json`);
         done();
       });
@@ -56,35 +87,68 @@ describe('server module', function(){
       it('should have a status of response status 200', done => {
         chai.request(server)
         .put('/api/note')
-        .send({id: note[0].id, name: note[0].name, details: note[0].details})
+        .send({id: notes[0].id, name:'Captain America', details: 'Is an asshole'})
         .end((err, res) => {
           console.error(err);
           expect(res).to.have.status(200);
           done();
         });
       });
-      it('should modify a specific record, given the correct inputs', done => {
-
-        done();
-      });
-      it('should have a response status of 404 no id', done => {
-
-        done();
-      });
-      it('should have a response status of 404 no id', done => {
-
-        done();
-      });
-    });
-    describe('requests made to the wrong route', function() {
-      it('should do some stuff', done => {
-
-
-        done();
+      it('requests to non-existant routes should return 404', done => {
+        chai.request(server)
+        .put('/api/notemon')
+        .send({id: notes[0].id, name: 'Captain Wackmerica', details: 'Is a terrible person.'})
+        .end((err, res) => {
+          console.log('You have successfully failed.');
+          expect(res).to.have.status(404);
+          done();
+        });
       });
     });
   });
-  describe('DELETE', function(){
 
+
+
+
+  describe('DELETE', function(){
+    let notes = [];
+    before(done => {
+      chai.request(server)
+      .post('/api/note')
+      .send({name: 'hello', details: 'wat-man'})
+      .end((err, res) => {
+        console.error(err);
+        let note = JSON.parse(res.body);
+        notes.push(note);
+        console.log(notes);
+        done();
+      });
+    });
+    after(done => {
+      notes.forEach(note => {
+        fs.unlinkProm(`${__dirname}/../data/note/${note.id}.json`);
+        done();
+      });
+    });
+    //Success
+    it('should delete a file successfully, and return 200', function(){
+      chai.request(server)
+      .delete('/api/note')
+      .send({id: notes[0].id})
+      .end((err, res) => {
+        console.log('You have successfully failed');
+        expect(res).to.have.status(200);
+      });
+    });
+    //failure
+    it('should fail to delete a file, and return error 404', function(){
+      chai.request(server)
+      .delete('/api/knowte')
+      .send({id: notes[0].id})
+      .end((err, res) => {
+        console.log('You have successfully failed');
+        expect(res).to.have.status(200);
+      });
+    });
   });
 });

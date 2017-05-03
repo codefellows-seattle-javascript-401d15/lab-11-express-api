@@ -52,3 +52,16 @@ exports.updateNote = function(schema, note){
     .catch(err => Promise.reject(createError(500, err.message)));
   });
 };
+
+
+exports.deleteNote = function(schema, note){
+  debug('#deleteNote');
+  if(!schema) return Promise.reject(createError(400, '!!No Schema!!'));
+  if(!note) return Promise.reject(createError(400, '!!No Note!!'));
+
+  return fs.unlinkProm(`${DATA_URL}/${schema}/${note.id}.json`)
+  .catch(err => console.error(err))
+  .then(() => {
+    return Promise.resolve(note);
+  });
+};

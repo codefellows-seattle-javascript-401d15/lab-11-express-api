@@ -7,10 +7,11 @@ const jsonParser = require('body-parser').json();
 const PORT = process.env.PORT || 3000;
 const app = express();
 const router = express.Router();
+const cors = require('./lib/cors');
 
 app.use(morgan('dev'));
 app.use(jsonParser);
-// app.use(cors);
+app.use(cors);
 //there are different plugins for morgan that will give us differently formatted output
 require('./routes/note-routes.js')(router);
 app.use(router);
