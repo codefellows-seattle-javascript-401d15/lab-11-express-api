@@ -275,7 +275,7 @@ describe('Server module tests', function() {
         .del(`/api/album?id=${testDelete}`)
         .end((err) => {
           if (err) console.error(err);
-          expect(testDelete.name).to.be.empty;
+          expect(testDelete.artist).to.be.empty;
           done();
         });
       });
