@@ -7,7 +7,7 @@ const cors = require('../lib/cors');
 
 module.exports = function(router) {
   router.post('/api/lure', cors, jsonParser, (req, res) => {
-    let lure = new Lure(req.body);
+    let lure = new Lure(req.body.name, req.body.type, req.body.targets);
 
     lureCtrl.createItem('lure', lure)
     .then(() => res.send(JSON.stringify(lure)))
@@ -20,6 +20,12 @@ module.exports = function(router) {
   router.get('/api/lure/:id', cors, (req, res) => {
     lureCtrl.fetchItem('lure', req.params.id)
     .then(data => res.json(data.toString()))
+    .catch(err => res.status(404).send(err.message));
+  });
+
+  router.get('/api/lure', cors, (req, res) => {
+    lureCtrl.fetchLureIDs()
+    .then( ids => res.json(ids))
     .catch(err => res.status(404).send(err.message));
   });
 

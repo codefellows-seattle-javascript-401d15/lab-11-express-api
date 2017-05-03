@@ -3,9 +3,10 @@
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
-const DATA_URL = `${__dirname}/../data`;
 
 module.exports = exports = {};
+
+const DATA_URL = `${__dirname}/../data`;
 
 exports.createItem = function(schema, lure) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
@@ -24,6 +25,12 @@ exports.fetchItem = function(schema, id) {
   return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
     .then(data => data)
     .catch(err => Promise.reject(createError(500, err.message)));
+};
+
+exports.fetchLureIDs = function() {
+  return fs.readFileProm(`${DATA_URL}/lure/*.json`)
+  .then(data => data)
+  .catch(err => Promise.reject(createError(500, err.message)));
 };
 
 exports.updateItem = function(schema, lure) {
