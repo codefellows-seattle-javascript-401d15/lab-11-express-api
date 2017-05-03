@@ -3,40 +3,32 @@
 const Car = require('../model/car');
 const Router = require('express').Router;
 const carCtrl = require('../controller/car-controller');
-const jsonParser = require('body-parser').json();
+
 const carRouter = module.exports = new Router();
 
-carRouter.post('/api/car', jsonParser, (req, res) => {
+carRouter.post('/api/car', (req, res) => {
   let car = new Car(req.body.name, req.body.model, req.body.horsepower);
   carCtrl.createItem('car', car)
   .then(() => res.json(JSON.stringify(car)))
   .catch(err =>{
-    res.send(err);
+    res.status(400).send(err.message);
   });
 });
 
 carRouter.get('/api/car/:id', (req, res)=>{
   carCtrl.fetchItem('car', req.params.id)
   .then(data => res.json(data.toString()))
-  .catch(err => {
-    res.send(err);
-  });
+  .catch(err => res.status(400).send(err.messgae));
 });
 
-carRouter.put('api/car/:id', (req, res)=> {
-  console.log('Hello');
-  carCtrl.updateItem('car', req.params.id, req.params.body)
-  .then(data => res.json(data.toString()))
-  .catch(err => {
-    console.error(err);
-    res.send(err);
-  });
+carRouter.put('/api/car', (req, res)=> {
+  carCtrl.updateItem('car', req.body)
+  .then(data => res.json(data))
+  .catch(err => res.status(404).send(err.message));
 });
 
 carRouter.delete('/api/car/:id', (req, res)=>{
   carCtrl.deleteItem('car', req.params.id)
   .then(()=> res.sendStatus(204))
-  .catch(err => {
-    res.send(err);
-  });
+  .catch(err => res.status(404).send(err.message));
 });
