@@ -1,14 +1,19 @@
 'use strict';
 
-const http = require('http');
-const Router = require('./lib/router');
-const debug = require('debug')('#http:server');
-const PORT = process.env.PORT || 3000;
+const express = require('express');
+const morgan = require('morgan');
+const jsonParser = require('body-parser').json();
 
-debug('server');
-const router = new Router();
-const server = module.exports = http.createServer(router.route());
+const PORT = process.env.PORT || 3000;
+const app = express();
+const router = express.Router();
+
+app.use(jsonParser);
+app.use(morgan('dev'));
 
 require('./route/routes')(router);
+app.use(router);
 
-server.listen(PORT, () => console.log(`Server listening at PORT: ${PORT}`));
+app.listen(PORT, () => console.log('app listening on PORT: ', PORT));
+
+module.exports = app;
