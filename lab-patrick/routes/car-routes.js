@@ -18,7 +18,7 @@ carRouter.post('/api/car', (req, res) => {
 carRouter.get('/api/car/:id', (req, res)=>{
   carCtrl.fetchItem('car', req.params.id)
   .then(data => res.json(data.toString()))
-  .catch(err => res.status(400).send(err.messgae));
+  .catch(err => res.status(400).send(err.message));
 });
 
 carRouter.put('/api/car', (req, res)=> {
