@@ -1,15 +1,22 @@
-'use strict'
+'use strict';
 
-const http = require('http')
-const Router = require('./lib/router')
-const storage = require('./lib/storage')
-const Ninja = require('./model/ninjas')
-const debug = require('debug')('http:server')
-const PORT = process.env.PORT || 3000
+const express = require('express');
+const morgan = require('morgan');
+const jsonParser = require('body-parser').json();
 
-const router = new Router()
-const server = module.exports = http.createServer(router.route())
+const PORT = process.env.PORT || 3000;
+const app = express();
+const router = express.Router();
 
-require('./routes/ninja-routes')(router)
 
-server.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
+app.use(jsonParser);
+app.use(morgan('dev'));
+
+
+
+require('./routes/ninja-routes')(router);
+app.use(router);
+
+app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
+
+module.exports = app;

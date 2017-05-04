@@ -1,0 +1,30 @@
+{
+  "name": "lab-11-express-api",
+  "version": "1.0.0",
+  "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab 11 single resource express api\r ======",
+  "main": "fs-prom.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renegadellama/lab-11-express-api.git"
+  },
+  "author": "Isak Swearingen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/renegadellama/lab-11-express-api/issues"
+  },
+  "homepage": "https://github.com/renegadellama/lab-11-express-api#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "uuid": "^3.0.1"
+  }
+}
