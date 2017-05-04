@@ -1,5 +1,4 @@
 'use strict';
-//parse response data
 
 const server = require('../server');
 const chai = require('chai');
