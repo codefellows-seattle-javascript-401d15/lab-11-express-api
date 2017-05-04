@@ -121,30 +121,41 @@ describe('server module', function() {
         done();
       });
     });
-    after(done => {
-      lures.forEach(lure => {
-        fs.unlinkProm(`${DATA_URL}/lure/${lure.id}.json`);
-      });
-      done();
-    });
+    // after(done => {
+    //   lures.forEach(lure => {
+    //     fs.unlinkProm(`${DATA_URL}/lure/${lure.id}.json`);
+    //   });
+    //   done();
+    // });
 
     describe('requests made to api/lure', function() {
 
       it('should have response status of 200', done => {
         chai.request(server)
-          .put(`api/note/${lures[0].id}`)
-          .send({id: lures[0].id, name: lures[0].name, type: lures[0].type, targets: lures[0].targets, water: 'fresh'})
+          .put(`/api/lure/${lures[0].id}`)
+          .send({name: lures[0].name, type: lures[0].type, targets: lures[0].targets, water: 'salt', id: lures[0].id})
           .end((err, res) => {
-            console.log('MY RESPONSE FOR A PUT ', res.status);
+            console.log('WTFWTFWTF : ', res);
             expect(res.status).to.equal(200);
             done();
           });
       });
 
+//       it('should return a status of 200 on proper request', done => {
+//   chai.request(server)
+//   .put(`/api/album/${testPut[0].id}`)
+//   .send({id: testPut[0].id, artist: testPut[0].artist, title: testPut[0].title, year: testPut[0].year})
+//   .end((err, res) => {
+//     if (err) console.error(err);
+//     expect(res).to.have.status(200);
+//     done();
+//   });
+// });
+
       it('should have a response status of 404 if given bad or no schema', done => {
         chai.request(server)
-          .put('/api/boogers')
-          .send({id: lures[0].id, name: 'minnow', type: lures[0].type, targets: lures[0].targets})
+          .put('/api/boogers/')
+          .send({name: lures[0].name, type: lures[0].type, targets: lures[0].targets, id: lures[0].id})
           .end((err, res) => {
             expect(res.status).to.equal(404);
             done();
@@ -154,10 +165,11 @@ describe('server module', function() {
 
     it('should modify a specific record if given the correct inputs', done => {
       chai.request(server)
-          .put('/api/note')
+          .put('/api/lure/')
           .send({id: lures[0].id, name: 'minnow', type: lures[0].type, targets: lures[0].targets})
           .end((err, res) => {
-            expect(res.body.name).to.equal('minnow');
+            console.log('Here is the response', res.text);
+            expect(res.text.name).to.equal('minnow');
             done();
           });
     });

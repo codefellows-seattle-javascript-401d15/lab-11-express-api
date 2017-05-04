@@ -29,8 +29,8 @@ module.exports = function(router) {
     .catch(err => res.status(404).send(err.message));
   });
 
-  router.put('/api/lure',(req, res) => {
-    lureCtrl.updateItem('lure', req.body)
+  router.put('/api/lure/:id',(req, res) => {
+    lureCtrl.updateItem('lure', req.text, req.params.id)
     .then(data => res.json(data))
     .catch(err => res.status(404).send(err.message));
   });

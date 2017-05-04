@@ -27,18 +27,18 @@ exports.fetchItem = function(schema, id) {
     .catch(err => Promise.reject(createError(500, err.message)));
 };
 
-exports.fetchLureIDs = function() {
+exports.fetchItemIDs = function() {
   return fs.readFileProm(`${DATA_URL}/lure/*.json`)
   .then(data => data)
   .catch(err => Promise.reject(createError(500, err.message)));
 };
 
-exports.updateItem = function(schema, lure) {
+exports.updateItem = function(schema, lure, id) {
 
   if(!schema) return Promise.reject(createError(412, 'Schema to be updated required'));
   if(!lure) return Promise.reject(createError(412, 'lure to be updated required'));
 
-  return fs.readFileProm(`${DATA_URL}/${schema}/${lure.id}.json`)
+  return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => {
     let  storage = JSON.parse(data.toString());
     storage.name = lure.name || storage.name;
