@@ -1,42 +1,43 @@
 {
   "name": "lab-teddy",
   "version": "1.0.0",
-  "description": "lab-09",
+  "description": "Lab 11",
   "main": "server.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "mocha",
-    "start": "node server.js"
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "lint": "eslint /**"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tedsters/lab-09-single-resource-api-fs.git"
+    "url": "git+https://github.com/tedsters/lab-11-express-api.git"
   },
   "keywords": [
-    "Promises",
-    "tests",
-    "mocha",
-    "fun"
+    "express",
+    "api",
+    "test"
   ],
   "author": "David Teddy",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tedsters/lab-09-single-resource-api-fs/issues"
+    "url": "https://github.com/tedsters/lab-11-express-api/issues"
   },
-  "homepage": "https://github.com/tedsters/lab-09-single-resource-api-fs#readme",
+  "homepage": "https://github.com/tedsters/lab-11-express-api#readme",
   "devDependencies": {
-    "bluebird": "^3.5.0",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
-    "debug": "^2.6.6",
-    "mocha": "^3.3.0",
-    "uuid": "^3.0.1"
+    "eslint": "^3.19.0",
+    "mocha": "^3.3.0"
   },
   "dependencies": {
-    "chai": "^3.5.0",
-    "chai-http": "^3.0.0",
-    "debug": "^2.6.6"
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "uuid": "^3.0.1"
   }
 }
