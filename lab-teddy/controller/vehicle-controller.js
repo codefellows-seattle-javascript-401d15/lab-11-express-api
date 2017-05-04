@@ -2,7 +2,7 @@
 
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const createError = require('http-error');
+const createError = require('http-errors');
 const DATA_URL = `${__dirname}/../data`;
 
 
@@ -12,13 +12,11 @@ module.exports = exports = {};
 exports.createCar = function(schema, car) {
   if(!schema) return (new Error('schema required'));
   if(!car) return (new Error('car required'));
-  // if(!storage[schema]) storage[schema] = {};
 
-  // storage[schema][car.id] = car;
   let jsonStorage = JSON.stringify(car);
-  fs.writeFileProm(`${DATA_URL}/${schema}/${car.id}.jso`, jsonStorage)
+  return fs.writeFileProm(`${DATA_URL}/${schema}/${car.id}.json`, jsonStorage)
   .then(() => car)
-    .catch(err => Promise.reject(createError(500, err.message)));
+  .catch(err => Promise.reject(createError(500, err.message)));
 };
 
 exports.fetchCar = function(schema, id){
@@ -28,19 +26,19 @@ exports.fetchCar = function(schema, id){
     if(!id) return reject (new Error('id require'));
 
     return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
-    .then(data => data)
+    .then(data => resolve(data))
     .catch(err => Promise.reject(createError(500, err.message)));
   });
 
 };
 
-exports.updateCar = function(schema, car){
+exports.updateCar = function(schema, car, id){
 
   if(!schema) return Promise.reject(createError(400, 'Schema Required'));
   if(!car) return Promise.reject(createError(400, 'Car Required'));
   let jsonStorage;
 
-  return fs.readFileProm(`${DATA_URL}/${schema}/${car.id}.json`)
+  return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => {
     let carStorage = JSON.parse(data.toString());
     carStorage.name = car.name || carStorage.name;
@@ -50,9 +48,11 @@ exports.updateCar = function(schema, car){
 
     jsonStorage = JSON.stringify(carStorage);
 
-    return fs.writeFileProm(`${DATA_URL}/${schema}/${car.id}.json`, jsonStorage)
-    .then(() => jsonStorage);
-  });
+    return fs.writeFileProm(`${DATA_URL}/${schema}/${id}.json`, jsonStorage)
+    .then(() => jsonStorage)
+    .catch((err) => Promise.reject(createError(500, err.message)));
+  })
+  .catch(err => Promise.reject(createError(500, err.message)));
 };
 
 exports.removeCar = function(schema, id){
@@ -61,5 +61,5 @@ exports.removeCar = function(schema, id){
 
   return fs.unlinkProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => data)
-  .catch(console.error('error in fs.unlinkProm'));
+  .catch(err => Promise.reject(createError(500, err.message)));
 };

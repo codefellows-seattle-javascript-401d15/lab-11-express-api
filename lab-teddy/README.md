@@ -17,6 +17,18 @@
 
 `npm i -D bluebird`
 
+### morgan:
+
+`npm i -S morgan`
+
+### express:
+
+`npm i -S express`
+
+### body-parser:
+
+`npm i -S body-parser`
+
 ### chai:
 
 `npm i -D chai`
@@ -25,13 +37,11 @@
 ### chai-http:
 
 `npm i -D chai-http`
-`npm i -S chai-http`
-
-### debug:
-
-`npm i -D debug`
-`npm i -S debug`
 
 ### mocha:
 
 `npm i -D mocha`
+
+### eslint:
+
+`npm i -D eslint`

@@ -12,7 +12,7 @@ app.use(jsonParser);
 app.use(morgan('dev'));
 app.use(router);
 
-require('./routes/album-routes.js')(router);
+require('./routes/car-routes.js')(router);
 
 app.listen(PORT, () => console.log(`Listening on port, ${PORT}`));
 
