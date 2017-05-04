@@ -198,7 +198,7 @@ describe('server module', function() {
         });
       });
 
-      describe.only('DELETE method', function() {
+      describe.skip('DELETE method', function() {
 
         before(done => {
           chai.request(server)
