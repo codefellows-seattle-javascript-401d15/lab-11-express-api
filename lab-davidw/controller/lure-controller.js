@@ -48,7 +48,7 @@ exports.updateItem = function(schema, lure, id) {
 
     let jsonStorage = JSON.stringify(storage);
 
-    return fs.writeFileProm(`${DATA_URL}/${schema}/${lure.id}.json`, jsonStorage)
+    return fs.writeFileProm(`${DATA_URL}/${schema}/${id}.json`, jsonStorage)
     .then(() => storage)
     .catch(err => Promise.reject(createError(500, err.message)));
   })

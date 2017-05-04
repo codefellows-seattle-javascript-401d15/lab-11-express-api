@@ -24,13 +24,13 @@ module.exports = function(router) {
   });
 
   router.get('/api/lure', cors, (req, res) => {
-    lureCtrl.fetchLureIDs()
+    lureCtrl.fetchItemIDs()
     .then( ids => res.json(ids))
     .catch(err => res.status(404).send(err.message));
   });
 
   router.put('/api/lure/:id',(req, res) => {
-    lureCtrl.updateItem('lure', req.text, req.params.id)
+    lureCtrl.updateItem('lure', req.body, req.params.id)
     .then(data => res.json(data))
     .catch(err => res.status(404).send(err.message));
   });

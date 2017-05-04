@@ -5,7 +5,6 @@ const expect = require('chai').expect;
 
 describe('fishingLure module', function() {
   let newLure = new Lure('momba', 'rattler', 'trout');
-  console.log(newLure);
   describe('when adding a new fishing lure', function() {
     it('should have a string for the name, "momba"', done => {
       expect(newLure).to.have.property('name')
@@ -15,7 +14,6 @@ describe('fishingLure module', function() {
     });
     it('should have string for the type, "rattler"', done => {
       expect(newLure).to.have.property('type')
-      .that.is.a('string')
       .that.equals('rattler');
       done();
     });
