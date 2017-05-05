@@ -14,13 +14,15 @@ module.exports = function(router) {
 
   router.get('/api/note/:id', (req, res) => {
     noteCtrl.fetchNote('note', req.params.id)
-    .then(data => res.json(JSON.stringify(data.toString())));
+    .then(data => res.json(JSON.parse(data.toString())));
   });
 
   // router.put('/api/note', )
   //
-  router.delete('/api/note', (req, res) => {
+
+  router.delete('/api/note/:id', (req, res) => {
     noteCtrl.deleteNote('note', req.params.id)
-    .then(data => res.json(JSON.stringify(data.toString())));
+    .then(() => res.status)
+    .catch(err => console.error(err));
   });
 };
