@@ -12,9 +12,8 @@ exports.createNote = function(schema, note) {
   if(!schema) return Promise.reject(createError(400, 'Schema required'));
   if(!note) return Promise.reject(createError(400, 'Note required'));
 
-  let jsonNote = JSON.stringify(note);
-  return fs.writeFileProm(`${DATA_URL}/${schema}/${note.id}.json`, jsonNote)
-  .then(jsonNote => jsonNote)
+  return fs.writeFileProm(`${DATA_URL}/${schema}/${note.id}.json`, JSON.stringify(note))
+  .then(() => note)
   .catch(err => Promise.reject(createError(500, err.message)));
 };
 
@@ -35,7 +34,6 @@ exports.updateNote = function(schema, id, newNote) {
   return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => {
     let oldNote = JSON.parse(data.toString());
-    console.log(oldNote, 'this is the oldNote object updateNote');
     if(oldNote.name) oldNote.name = newNote.name;
     if(oldNote.date) oldNote.date = newNote.date;
 
