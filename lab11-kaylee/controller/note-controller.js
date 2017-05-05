@@ -14,7 +14,7 @@ exports.createNote = function(schema, note) {
 
   let jsonNote = JSON.stringify(note);
   return fs.writeFileProm(`${DATA_URL}/${schema}/${note.id}.json`, jsonNote)
-  .then(() => note)
+  .then(jsonNote => jsonNote)
   .catch(err => Promise.reject(createError(500, err.message)));
 };
 
