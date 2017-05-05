@@ -198,7 +198,7 @@ describe('server module', function() {
         });
       });
 
-      describe.skip('DELETE method', function() {
+      describe.only('DELETE method', function() {
 
         before(done => {
           chai.request(server)
@@ -209,6 +209,16 @@ describe('server module', function() {
             lures.push(lure);
             done();
           });
+        });
+        it('should return 204', done => {
+          chai.request(server)
+            .delete(`/api/lure/${lures[0].id}`)
+            .send({name: 'minnow', type: 'rattler', targets: 'trout'})
+            .end((err, res) => {
+              console.error(err);
+              expect(res).to.have.status(204);
+              done();
+            });
         });
       });
     });
