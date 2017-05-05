@@ -198,7 +198,7 @@ describe('server module', function() {
         });
       });
 
-      describe.only('DELETE method', function() {
+      describe('DELETE method', function() {
 
         before(done => {
           chai.request(server)
@@ -210,13 +210,13 @@ describe('server module', function() {
             done();
           });
         });
-        it('should return 204', done => {
+        it('should return 200', done => {
           chai.request(server)
             .delete(`/api/lure/${lures[0].id}`)
             .send({name: 'minnow', type: 'rattler', targets: 'trout'})
             .end((err, res) => {
               console.error(err);
-              expect(res).to.have.status(204);
+              expect(res).to.have.status(200);
               done();
             });
         });
