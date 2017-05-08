@@ -28,7 +28,7 @@ describe('server module', function() {
       before(done => {
         chai.request(server)
         .post('/api/car')
-        .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
+        .send({'name': 'WRX', 'model': 'Subaru', 'horsepower': 200})
         .end((err, res)=>{
           let car = JSON.parse(res.body);
           cars.push(car);
@@ -121,13 +121,9 @@ describe('server module', function() {
         });
       });
     });
-    describe('requests made to invalid route', function(){
-
-    });
   });
 
   describe('POST method', function(){
-
 
     it('should have a response ststus of 404 give incorrct inputs', done =>{
       chai.request(server)

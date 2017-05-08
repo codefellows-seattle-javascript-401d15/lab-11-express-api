@@ -10,9 +10,7 @@ carRouter.post('/api/car', (req, res) => {
   let car = new Car(req.body.name, req.body.model, req.body.horsepower);
   carCtrl.createItem('car', car)
   .then(() => res.json(JSON.stringify(car)))
-  .catch(err =>{
-    res.status(400).send(err.message);
-  });
+  .catch(err =>res.status(400).send(err.message));
 });
 
 carRouter.get('/api/car/:id', (req, res)=>{
