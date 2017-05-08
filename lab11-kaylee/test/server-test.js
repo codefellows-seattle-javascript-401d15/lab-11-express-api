@@ -8,12 +8,13 @@ const expect = chai.expect;
 chai.use(http);
 
 describe('server module', function() {
+  let app;
   before(done => {
-    server.listen(3000);
+    app = server.listen(5000);
     done();
   });
   after(done => {
-    server.close();
+    app.close();
     done();
   });
 
@@ -27,11 +28,18 @@ describe('server module', function() {
         getResource = JSON.parse(res.text.toString());
         done();
       });
+      after(done => {
+        chai.request(server)
+        .delete(`/api/note/${getResource.id}`)
+        .end(() => {
+          done();
+        });
+      });
     });
     describe('a properly formatted request', function() {
       it('should return a 200 status code given a valid id', done => {
         chai.request(server)
-        .get(`/api/note?id=${getResource.id}`)
+        .get(`/api/note/${getResource.id}`)
         .end((err, res) => {
           if(err) console.error(err);
           expect(res.status).to.equal(200);
@@ -42,7 +50,7 @@ describe('server module', function() {
     describe('an improperly formatted request', function() {
       it('should return a 404 status code given an invalid id', done => {
         chai.request(server)
-        .get('/api/note?id=badId')
+        .get('/api/note/badId')
         .end((err, res) => {
           if(err) console.error(err);
           expect(res.status).to.equal(404);
@@ -50,25 +58,17 @@ describe('server module', function() {
         });
       });
     });
-    after(done => {
-      chai.request(server)
-      .delete('/api/note')
-      .query({id: getResource.id})
-      .end(() => {
-        done();
-      });
-    });
   });
 
   describe('POST method', function() {
     describe('a properly formatted request', function() {
-      it('should return a 201 status code given a valid body', done => {
+      it('should return a 200 status code given a valid body', done => {
         chai.request(server)
         .post(`/api/note`)
         .send({name: 'Kaylee', date: 'April 16, 2017'})
         .end((err, res) => {
           if(err) console.error(err);
-          expect(res.status).to.equal(201);
+          expect(res.status).to.equal(200);
           done();
         });
       });
@@ -77,7 +77,7 @@ describe('server module', function() {
       it('should return a 400 status code if given an invalid body or no body provided', done => {
         chai.request(server)
         .post('/api/note')
-        .send()
+        .send({})
         .end((err, res) => {
           if(err) console.error(err);
           expect(res.status).to.equal(400);
@@ -100,20 +100,19 @@ describe('server module', function() {
     });
     after(done => {
       chai.request(server)
-      .delete('/api/note')
-      .query({id: putResource.id})
+      .delete(`/api/note/${putResource.id}`)
       .end(() => {
         done();
       });
     });
     describe('a properly formatted request', function() {
-      it('should return a 202 status code given a valid id', done => {
+      it('should return a 200 status code given a valid id', done => {
         chai.request(server)
-        .put(`/api/note?id=${putResource.id}`)
+        .put(`/api/note/${putResource.id}`)
         .send({name: 'Kaylee', date: 'April 18, 2017'})
         .end((err, res) => {
           if(err) console.error(err);
-          expect(res.status).to.equal(202);
+          expect(res.status).to.equal(200);
           done();
         });
       });
@@ -121,7 +120,7 @@ describe('server module', function() {
     describe('an improperly formatted request', function() {
       it('should return a 400 status code if given an invalid body or no body provided', done => {
         chai.request(server)
-        .get('/api/note')
+        .get(`/api/note/${putResource.id}`)
         .send({})
         .end((err, res) => {
           if(err) console.error(err);
@@ -132,7 +131,7 @@ describe('server module', function() {
     });
   });
 
-  describe('DELETE method', function() {
+  describe.only('DELETE method', function() {
     let deleteResource;
     before(done => {
       chai.request(server)
@@ -143,14 +142,20 @@ describe('server module', function() {
         done();
       });
     });
+    after(done => {
+      chai.request(server)
+      .delete(`/api/note/${deleteResource.id}`)
+      .end(() => {
+        done();
+      });
+    });
     describe('a properly formatted request', function() {
-      it('should return a 204 status code given a proper id', done => {
+      it('should return a 200 status code given a proper id', done => {
         chai.request(server)
-        .delete('/api/note')
-        .query({id: deleteResource.id})
+        .delete(`/api/note/${deleteResource.id}`)
         .end((err, res) => {
           if(err) console.error(err);
-          expect(res.status).to.equal(204);
+          expect(res.status).to.equal(200);
           done();
         });
       });
@@ -158,20 +163,12 @@ describe('server module', function() {
     describe('an improperly formatted request', function() {
       it('should return a 404 status code given an invalid id', done => {
         chai.request(server)
-        .get('/api/note?id=badId')
+        .delete('/api/note/badId')
         .end((err, res) => {
           if(err) console.error(err);
           expect(res.status).to.equal(404);
           done();
         });
-      });
-    });
-    after(done => {
-      chai.request(server)
-      .delete('/api/note')
-      .query({id: deleteResource.id})
-      .end(() => {
-        done();
       });
     });
   });
