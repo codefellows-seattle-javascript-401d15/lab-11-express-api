@@ -1,0 +1,33 @@
+{
+  "name": "lab-11-lindsay",
+  "version": "1.0.0",
+  "description": "lab-11-express-api",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^3.5.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lindsgil/lab-11-express-api.git"
+  },
+  "keywords": [
+    "lab-11"
+  ],
+  "author": "lindsay gilbert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lindsgil/lab-11-express-api/issues"
+  },
+  "homepage": "https://github.com/lindsgil/lab-11-express-api#readme"
+}
