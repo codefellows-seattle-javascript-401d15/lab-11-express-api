@@ -19,9 +19,9 @@ carRouter.get('/api/car/:id', (req, res)=>{
   .catch(err => res.status(400).send(err.message));
 });
 
-carRouter.put('/api/car', (req, res)=> {
-  carCtrl.updateItem('car', req.body)
-  .then(data => res.json(data))
+carRouter.put('/api/car/:id', (req, res)=> {
+  carCtrl.updateItem('car', req.body, req.params.id)
+  .then(data => res.json(JSON.stringify(data)))
   .catch(err => res.status(404).send(err.message));
 });
 

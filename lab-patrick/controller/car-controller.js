@@ -28,11 +28,11 @@ exports.fetchItem = function(schema, id){
   .catch(err => Promise.reject(createError(400, err.message)));
 };
 
-exports.updateItem = function(schema, car){
+exports.updateItem = function(schema, car, id){
   if(!schema) return Promise.reject(createError(400, 'Scheme required'));
-  if(!car) return Promise.reject(createError(400, 'Car required'));
+  if(!id) return Promise.reject(createError(400, 'Car required'));
 
-  return fs.readFileProm(`${DATA_URL}/${schema}/${car.id}.json`)
+  return fs.readFileProm(`${DATA_URL}/${schema}/${id}.json`)
   .then(data => {
     let storage = JSON.parse(data.toString());
     storage.name = car.name || storage.name;
@@ -41,7 +41,7 @@ exports.updateItem = function(schema, car){
 
     let jsonStorage = JSON.stringify(storage);
 
-    return fs.writeFileProm(`${DATA_URL}/${schema}/${car.id}.json`, jsonStorage)
+    return fs.writeFileProm(`${DATA_URL}/${schema}/${id}.json`, jsonStorage)
     .then(()=> storage)
     .catch(err => Promise.reject(createError(500, err.message)));
   })
