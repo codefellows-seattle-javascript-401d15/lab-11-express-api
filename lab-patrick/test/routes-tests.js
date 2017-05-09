@@ -95,12 +95,12 @@ describe('server module', function() {
     describe('requests made to /api/car', function(){
       it('should have a response status of 200', done =>{
         chai.request(server)
-        .put('api/car/')
-        .send({id: cars[0].id, name: cars[0].name, model: cars[0].model, horsepower: cars[0].horsepower})
+        .put(`/api/car/${cars[0].id}`)
+        .send({name: 'foobar'})
         .end((err, res) => {
           expect(res).to.have.status(200);
+          done();
         });
-        done();
       });
       it('should have a response ststus of 404 given no id', done =>{
         chai.request(server)
@@ -113,10 +113,12 @@ describe('server module', function() {
       });
       it('should modify a record given correct inputs', done =>{
         chai.request(server)
-        .put('/api/car/')
-        .send({id: cars[0].id, name: 'foobar'})
+        .put(`/api/car/${cars[0].id}`)
+        .send({name: 'foobar'})
         .end((err, res) => {
-          expect(res.body.name).to.equal('foobar');
+          let expected = JSON.parse(res.body)
+          console.log(expected.name);
+          expect(expected.name).to.equal('foobar');
           done();
         });
       });
