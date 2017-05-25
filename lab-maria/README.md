@@ -4,12 +4,10 @@ Small Node.js App for Codefellows Coding Bootcamp.
 Keep *Better* track of your DeathNotes and their Death Gods with this primitive storage express app (only we're actually using the official Express.js dependency) by using the filesystem node module!
 
 ##Installation:
-
 1. clone this repository and ``cd`` into it
 2. run ``npm i``
 
 ## To Use:
-
 1. Start the server using ``npm start`` in one terminal
 2. In separate terminal, use [HTTPie][https://httpie.org/] to perform the following CRUD operations:
 
