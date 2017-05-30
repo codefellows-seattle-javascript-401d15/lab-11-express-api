@@ -1,0 +1,37 @@
+{
+  "name": "lab-shelly",
+  "version": "1.0.0",
+  "description": "lab 11 express api",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "debug": "^2.6.6",
+    "eslint": "^3.19.0",
+    "mocha": "^3.3.0"
+  },
+  "scripts": {
+    "build": "npm run lint && npm run test",
+    "test": "mocha",
+    "lint": "eslint /**",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "debug": "DEBUG=http* nodemon server.js"
+  },
+  "keywords": [
+    "express",
+    "api"
+  ],
+  "author": "shelly",
+  "license": "MIT"
+}
