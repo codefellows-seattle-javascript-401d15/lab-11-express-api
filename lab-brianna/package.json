@@ -1,0 +1,41 @@
+{
+  "name": "lab-brianna",
+  "version": "1.0.0",
+  "description": "whomp",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "debug": "DEBUG=http* nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brisourceful/lab-08-single-resource-api.git"
+  },
+  "keywords": [
+    "node",
+    "api",
+    "REST",
+    "chai",
+    "mocha"
+  ],
+  "author": "Brianna Burrows",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brisourceful/lab-08-single-resource-api/issues"
+  },
+  "homepage": "https://github.com/brisourceful/lab-08-single-resource-api#readme",
+  "devDependencies": {
+    "bluebird": "^3.5.0",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "debug": "^2.6.4",
+    "eslint": "^3.19.0",
+    "mocha": "^3.3.0",
+    "superagent": "^3.5.2"
+  },
+  "dependencies": {
+    "uuid": "^3.0.1"
+  }
+}
