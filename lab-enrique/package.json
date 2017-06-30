@@ -13,12 +13,16 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "body-parser": "^1.17.1",
-    "morgan": "^1.8.1"
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
+    "del": "^2.2.2",
+    "morgan": "^1.8.2"
   },
   "dependencies": {
-    "express": "^4.15.2",
-    "mocha": "^3.3.0",
-    "uuid": "^3.0.1"
+    "express": "^4.15.3",
+    "mocha": "^3.4.2",
+    "uuid": "^3.1.0"
   }
 }

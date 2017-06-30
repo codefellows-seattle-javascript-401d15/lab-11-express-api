@@ -2,7 +2,7 @@
 
 const express = require('express');
 const morgan = require('morgan');
-const jsonParser = require('body-parser').json()
+const jsonParser = require('body-parser').json();
 const PORT = process.env.PORT || 3000;
 const app = express();
 const router = express.Router();
